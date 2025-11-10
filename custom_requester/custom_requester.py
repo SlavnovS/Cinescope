@@ -25,7 +25,7 @@ class CustomRequester:
         response = self.session.request(method, url, json=data,
                                         params=params, headers=self.headers)
         if need_logging:
-            self.log_request_and_response(response)
+            self.log_request_and_response(response, expected_status)
         if response.status_code != expected_status:
             raise ValueError(f"Unexpected status code: {response.status_code}. "
                              f"Expected: {expected_status}")
@@ -39,10 +39,11 @@ class CustomRequester:
         self.headers.update(kwargs)
         self.session.headers.update(self.headers)
 
-    def log_request_and_response(self, response):
+    def log_request_and_response(self, response, expected_status):
         """
         Логирование запросов и ответов.
         :param response: Объект ответа requests.response.
+        :param expected_status: Ожидаемый статус код
         """
         try:
             request = response.request
@@ -69,7 +70,7 @@ class CustomRequester:
 
             # Обрабатываем ответ
             response_status = response.status_code
-            is_success = response.ok
+            # is_success = response.ok -теперь не нужен (сравниваем с ожидаемым СК)
             response_data = response.text
             # Попытка форматировать JSON
             try:
@@ -79,7 +80,7 @@ class CustomRequester:
 
             # Логируем ответ
             self.logger.info(f"\n{'=' * 40} RESPONSE {'=' * 40}")
-            if not is_success:
+            if expected_status != response.status_code:
                 self.logger.info(
                     f"\tSTATUS_CODE: {RED}{response_status}{RESET}\n"
                     f"\tDATA: {RED}{response_data}{RESET}"
