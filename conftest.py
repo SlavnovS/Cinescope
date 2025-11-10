@@ -1,3 +1,5 @@
+from http.client import responses
+
 import requests
 import pytest
 from utils.data_generator import DataGenerator
@@ -39,16 +41,29 @@ def api_manager(session):
 
 
 @pytest.fixture(scope="session")
-def movi_data():
-    random_film = DataGenerator.generate_random_movi()
+def movie_data():
+    random_film = DataGenerator.generate_random_movie()
     return random_film
 
 
-@pytest.fixture(scope="session")
-def movi_get_params():
-    movi_get_params = DataGenerator.generate_random_movi_get_params()
-    return movi_get_params
+@pytest.fixture(scope="function")
+def movie_get_params():
+    movie_get_params = DataGenerator.generate_random_movie_get_params()
+    return movie_get_params
 
+@pytest.fixture(scope="function")
+def created_movie(api_manager):
+    random_film = DataGenerator.generate_random_movie()
+    response = api_manager.movies_api.post_movies(random_film, expected_status=201).json()
+    yield response
+    api_manager.movies_api.del_movies_by_id(response['id'])
+
+
+@pytest.fixture(scope="function")
+def created_movie_for_del(api_manager):
+    random_film = DataGenerator.generate_random_movie()
+    response = api_manager.movies_api.post_movies(random_film, expected_status=201).json()
+    return response
 
 @pytest.fixture(scope="session")
 def admin_user():

@@ -46,7 +46,7 @@ class DataGenerator:
         return ''.join(password)
 
     @staticmethod
-    def generate_random_movi():
+    def generate_random_movie():
         return {
             "name": f"The {faker.catch_phrase()}",
             "imageUrl": "https://avatars.mds.yandex.net/"
@@ -59,7 +59,7 @@ class DataGenerator:
         }
 
     @staticmethod
-    def generate_random_movi_get_params():
+    def generate_random_movie_get_params():
         return {'pageSize': random.randint(2, 4),
                 'page': 1,
                 'minPrice': random.randint(150, 280),

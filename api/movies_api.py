@@ -1,11 +1,12 @@
 from custom_requester.custom_requester import CustomRequester
 from constants import MOVIES_BASE_URL, MOVIES_ENDPOINT
 
+
 class MoviesAPI(CustomRequester):
     def __init__(self, session):
         super().__init__(session=session, base_url=MOVIES_BASE_URL)
 
-    def get_movies(self, movi_get_params, expected_status=200):
+    def get_movies(self, movi_get_params=None, expected_status=200):
         """ просмотр списка всех фильмов """
         return self.send_request(
             method="GET",
