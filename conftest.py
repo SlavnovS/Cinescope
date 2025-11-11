@@ -106,9 +106,9 @@ def created_movie(super_admin):
 
 
 @pytest.fixture(scope="function")
-def created_movie_for_del(api_manager):
+def created_movie_for_del(super_admin):
     random_film = DataGenerator.generate_random_movie()
-    response = api_manager.movies_api.post_movies(random_film, expected_status=201).json()
+    response = super_admin.api.movies_api.post_movies(random_film, expected_status=201).json()
     return response
 
 @pytest.fixture(scope="session")
