@@ -1,9 +1,11 @@
+from http.client import responses
+
 from api.api_manager import ApiManager
+from conftest import admin_user, common_user
 
 
 class TestAuthAPI:
     user_id = None
-
 
     def test_register_user(self, api_manager: ApiManager, test_user):
         """ Тест на регистрацию пользователя. """
@@ -15,19 +17,24 @@ class TestAuthAPI:
         assert "USER" in response_data["roles"], "Роль USER должна быть у пользователя"
         TestAuthAPI.user_id = response_data["id"]
 
+    def test_login_user(self, api_manager, test_user):
+        """ Тест на регистрацию и авторизацию пользователя. """
+        api_manager.auth_api.register_user(test_user).json()
+        login_data = {"email": test_user["email"],
+                      "password": test_user["password"]}
+        response = api_manager.auth_api.login_user(login_data).json()
+        assert "accessToken" in response, "Токен доступа отсутствует в ответе"
+        assert response["user"]["email"] == test_user["email"], "Email не совпадает"
+
+
+class TestNegativeAuthAPI:
+
     def test_negative_register_user(self, api_manager: ApiManager, test_user):
         """ Негативный тест на регистрацию пользователя. """
         del test_user["passwordRepeat"]
         response = api_manager.auth_api.register_user(test_user, expected_status=400)
         assert response.status_code == 400, "нет ошибки аутентификации"
         assert "accessToken" not in response.json(), "Токен доступа присутствует в ответе"
-
-    def test_login_user(self, api_manager, test_user):
-        """ Тест на регистрацию и авторизацию пользователя. """
-        response = api_manager.auth_api.login_user(test_user)
-        response_data = response.json()
-        assert "accessToken" in response_data, "Токен доступа отсутствует в ответе"
-        assert response_data["user"]["email"] == test_user["email"], "Email не совпадает"
 
     def test_negative_login_user(self, api_manager, test_user):
         """ Негативный тест на регистрацию и авторизацию пользователя. """
@@ -36,45 +43,49 @@ class TestAuthAPI:
         response = api_manager.auth_api.login_user(test_negative_user, expected_status=401)
         assert "accessToken" not in response.json(), "Токен доступа присутствует в ответе"
 
-    # токен созданного пользователя подгружаю в хеддеры
-    # не уверен что функция login_user вообще нужна, но оставил так
-    def test_authenticate_user(self, api_manager, test_user):
-        """ Логинимся под обычным юзером и обновляем токен """
-        response = api_manager.auth_api.authenticate(test_user)
 
-    def test_negative_get_user_info(self, api_manager):
-        """ Негативный тест на получение информации о пользователе по ID. """
-        response = api_manager.user_api.get_user_info(TestAuthAPI.user_id, expected_status=403)
-        assert response.json() == {'error': 'Forbidden', 'message': 'Forbidden resource',
-                                   'statusCode': 403}, "неверное тело ответа"
+class TestUser:
 
-    def test_negative_delete_user(self, api_manager):
-        """ Негативный тест на удаление пользователя по ID. """
-        if TestAuthAPI.user_id[:1] != '4': # ну это прям совсем затычка - мне самому не нравится
-            negative_user_id = '4' + TestAuthAPI.user_id[1:]
-        else:
-            negative_user_id = '5' + TestAuthAPI.user_id[1:]
-        response = api_manager.user_api.delete_user(negative_user_id, expected_status=403)
-        assert response.json() == {'message': 'Forbidden', 'statusCode': 403},\
-            "неверное тело ответа"
+    def test_create_user(self, super_admin, creation_user_data):
+        """ Тест на создание пользователя по ID с правами суперадмина. """
+        response = super_admin.api.user_api.create_user(creation_user_data).json()
 
-    # только тут вхожу под админом и добавляю токен в хеддеры
-    # думаю ты скажешь что это можно сделать более правильно =)
-    def test_admin_login(self, api_manager, admin_user):
-        """ Логинимся под админом и обновляем токен """
-        response = api_manager.auth_api.authenticate(admin_user)
+        # assert response.get('id') and response['id'] != '', "ID должен быть не пустым" - зачем??
 
-    def test_get_user_info(self, api_manager):
-        """ Тест на получение информации о пользователе по ID. """
-        response = api_manager.user_api.get_user_info(TestAuthAPI.user_id)
-        response_data = response.json()
-        assert "roles" in response_data, "Роли пользователя отсутствуют в ответе"
-        assert "USER" in response_data["roles"], "Роль USER должна быть у пользователя"
+        assert response.get('id'), "ID должен быть не пустым"  # вроде так достаточно
+        assert response.get('email') == creation_user_data['email']
+        assert response.get('fullName') == creation_user_data['fullName']
+        assert response.get('roles', []) == creation_user_data['roles']
+        assert response.get('verified') is True
 
-    def test_delete_user(self, api_manager):
-        """ Тест на удаление пользователя по ID. """
-        response = api_manager.user_api.delete_user(TestAuthAPI.user_id)
-        get_responce = api_manager.user_api.get_user_info(TestAuthAPI.user_id)
-        assert len(get_responce.json()) == 0, "данные не удалились"
+    def test_get_user_by_locator(self, super_admin, creation_user_data):
+        """ Тест на получение информации пользователя по ID с правами суперадмина. """
+        created_user_response = super_admin.api.user_api.create_user(creation_user_data).json()
+        response_by_id = super_admin.api.user_api.get_user(created_user_response['id']).json()
+        response_by_email = super_admin.api.user_api.get_user(creation_user_data['email']).json()
 
+        assert response_by_id == response_by_email, "Содержание ответов должно быть идентичным"
+        assert response_by_id.get('id'), "ID должен быть не пустым"
+        assert response_by_id.get('email') == creation_user_data['email']
+        assert response_by_id.get('fullName') == creation_user_data['fullName']
+        assert response_by_id.get('roles', []) == creation_user_data['roles']
+        assert response_by_id.get('verified') is True
 
+    def test_get_user_by_id_common_user(self, common_user):
+        """ Тест на получение информации пользователя по ID с правами юзера. """
+        common_user.api.user_api.get_user(common_user.email, expected_status=403)
+
+    def test_delete_user(self, super_admin, creation_user_data):
+        """ Тест на удаление пользователя по ID с правами суперадмина. """
+        response = super_admin.api.user_api.create_user(creation_user_data).json()
+        super_admin.api.user_api.delete_user(response.get('id'))
+        get_response = super_admin.api.user_api.get_user(response.get('id'))
+        assert len(get_response.json()) == 0, "данные не удалились"
+
+    def test_delete_user_by_id_common_user(self, common_user, super_admin, creation_user_data):
+        """ Тест на удаление пользователя по ID с правами юзера. """
+        response = super_admin.api.user_api.create_user(creation_user_data).json()
+        common_user.api.user_api.delete_user(response.get('id'), expected_status=403)
+        get_response = super_admin.api.user_api.get_user(response.get('id'))
+        assert len(get_response.json()) != 0, "данные удалились"
+        super_admin.api.user_api.delete_user(response.get('id'))

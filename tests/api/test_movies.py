@@ -15,13 +15,13 @@ class TestMovies:
                 'фильтр не отрабатывает, цена вне указанного диапазона'
             assert movie['location'] == movie_get_params['locations'], 'фильтр не отрабатывает, неправильная локация'
 
-    def test_post_movies(self, api_manager, movie_data):
+    def test_post_movies(self, super_admin, api_manager, movie_data):
         """ Тест поста нового фильма """
-        response = api_manager.movies_api.post_movies(movie_data)
-        movi_id = response.json()['id']
-        assert response.json()["name"] == movie_data["name"], \
+        json_response = super_admin.api.movies_api.post_movies(movie_data).json()
+        movi_id = json_response['id']
+        assert json_response["name"] == movie_data["name"], \
             "название фильма не соответствует отправленному"
-        assert response.json()["price"] == movie_data["price"], \
+        assert json_response["price"] == movie_data["price"], \
             "стоймость фильма не соответствует отправленному"
         api_manager.movies_api.get_movies_by_id(movi_id)
 
@@ -51,8 +51,23 @@ class TestMovies:
 
 
 class TestMoviesNegative:
-    def test_negative_post_movies(self, api_manager, created_movie):
-        """ Негативный тест поста нового фильма """
+
+    def test_negative_get_movies(self, api_manager, movie_get_params):
+        """ Негативный тест получения списка фильмов """
+        movie_get_params['locations'] = "Gdov"
+        api_manager.movies_api.get_movies(movie_get_params,
+                                          expected_status=400)
+
+    # def test_negative_post_movies(self, api_manager, created_movie, super_admin):
+    #     """ Негативный тест поста нового фильма """
+    #     json_response = super_admin.api.movies_api.post_movies(movie_data, expected_status=409).json()
+    #     movi_id = json_response['id']
+    #     assert json_response["name"] == movie_data["name"], \
+    #         "название фильма не соответствует отправленному"
+    #     assert json_response["price"] == movie_data["price"], \
+    #         "стоймость фильма не соответствует отправленному"
+    #     api_manager.movies_api.get_movies_by_id(movi_id)
+
         response = api_manager.movies_api.post_movies(created_movie, expected_status=409)
         assert response.json()["message"] == "Фильм с таким названием уже существует", \
             "неверный вывод ошибки"
@@ -60,12 +75,6 @@ class TestMoviesNegative:
     def test_negative_del_movies_by_id(self, api_manager):
         """ Негативный тест удаления фильма по ID. """
         api_manager.movies_api.del_movies_by_id("aaa", expected_status=404)
-
-    def test_negative_get_movies(self, api_manager, movie_get_params):
-        """ Негативный тест получения списка фильмов """
-        movie_get_params['locations'] = "Gdov"
-        api_manager.movies_api.get_movies(movie_get_params,
-                                          expected_status=400)
 
     def test_negative_patch_movies_by_id(self, api_manager, created_movie):
         """ Негативный тест редактирования фильма по ID. """

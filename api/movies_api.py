@@ -26,20 +26,20 @@ class MoviesAPI(CustomRequester):
         """ получение фильма по id """
         return self.send_request(
             method="GET",
-            endpoint=f"{MOVIES_ENDPOINT}/{movi_id}",
+            endpoint=f"{MOVIES_ENDPOINT}{movi_id}",
             expected_status=expected_status)
 
     def del_movies_by_id(self, movi_id, expected_status=200):
         """ удаление фильма по id """
         return self.send_request(
             method="DELETE",
-            endpoint=f"{MOVIES_ENDPOINT}/{movi_id}",
+            endpoint=f"{MOVIES_ENDPOINT}{movi_id}",
             expected_status=expected_status)
 
     def patch_movies_by_id(self, movi_id, movi_data, expected_status=200):
         """ редактирование фильма по id """
         return self.send_request(
             method="PATCH",
-            endpoint=f"{MOVIES_ENDPOINT}/{movi_id}",
+            endpoint=f"{MOVIES_ENDPOINT}{movi_id}",
             data=movi_data,
             expected_status=expected_status)
