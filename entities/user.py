@@ -1,5 +1,6 @@
 from api.api_manager import ApiManager
 
+
 class User:
     def __init__(self, email: str, password: str, roles: list, api: ApiManager):
         self.email = email
@@ -13,4 +14,3 @@ class User:
         return {"email": self.email,
                 "password": self.password}
         # return self.email, self.password
-

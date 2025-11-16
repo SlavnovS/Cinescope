@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class Roles(Enum):
+class Roles(str, Enum):
     USER = "USER"
     ADMIN = "ADMIN"
     SUPER_ADMIN = "SUPER_ADMIN"
@@ -19,3 +19,7 @@ USER_ENDPOINT = "user/"
 
 MOVIES_BASE_URL = "https://api.dev-cinescope.coconutqa.ru/"
 MOVIES_ENDPOINT = "movies/"
+
+GREEN = '\033[32m'
+RED = '\033[31m'
+RESET = '\033[0m'
