@@ -1,0 +1,95 @@
+2025-11-16 13:49:07 [32mINFO[0m 
+======================================== REQUEST ========================================
+2025-11-16 13:49:07 [32mINFO[0m [32mpytest tests/api/test_auth.py::TestUser::test_get_user_by_locator_common_user (setup)[0m
+curl -X POST 'https://auth.dev-cinescope.coconutqa.ru/login/' \
+-H 'User-Agent: python-requests/2.32.5' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+-H 'Content-Length: 53' \
+-d '{"email": "api1@gmail.com", "password": "asdqwe123Q"}' 
+
+2025-11-16 13:49:07 [32mINFO[0m 
+======================================== RESPONSE ========================================
+2025-11-16 13:49:07 [32mINFO[0m 	STATUS_CODE: [32m200[0m
+	DATA:
+{"user":{"id":"a76b8bf9-af13-45bb-b200-b9db86db26d3","email":"api1@gmail.com","fullName":"Админ Кокосовый Куа","roles":["USER","ADMIN","SUPER_ADMIN"]},"accessToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE3NmI4YmY5LWFmMTMtNDViYi1iMjAwLWI5ZGI4NmRiMjZkMyIsImVtYWlsIjoiYXBpMUBnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIiwiQURNSU4iLCJTVVBFUl9BRE1JTiJdLCJ2ZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNzYzMjkwMTQ3LCJleHAiOjE3NjMyOTE5NDd9.5-Tr1Nu8Zs3i9808JMg4x2D3k4Kq2zp6S22IFasJliA","refreshToken":"2a3923a3-1d64-4c36-a7e6-6cde31980832","expiresIn":1763291947629}
+2025-11-16 13:49:07 [32mINFO[0m ================================================================================
+
+2025-11-16 13:49:07 [32mINFO[0m 
+======================================== REQUEST ========================================
+2025-11-16 13:49:08 [32mINFO[0m [32mpytest tests/api/test_auth.py::TestUser::test_get_user_by_locator_common_user (setup)[0m
+curl -X POST 'https://auth.dev-cinescope.coconutqa.ru/user/' \
+-H 'User-Agent: python-requests/2.32.5' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+-H 'authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE3NmI4YmY5LWFmMTMtNDViYi1iMjAwLWI5ZGI4NmRiMjZkMyIsImVtYWlsIjoiYXBpMUBnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIiwiQURNSU4iLCJTVVBFUl9BRE1JTiJdLCJ2ZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNzYzMjkwMTQ3LCJleHAiOjE3NjMyOTE5NDd9.5-Tr1Nu8Zs3i9808JMg4x2D3k4Kq2zp6S22IFasJliA' \
+-H 'Cookie: refresh_token=2a3923a3-1d64-4c36-a7e6-6cde31980832' \
+-H 'Content-Length: 192' \
+-d '{"email": "kekiqy166sb@gmail.com", "fullName": "Felicia Curtis", "password": "ymVg7c%KTcY@tx*Fl4", "passwordRepeat": "ymVg7c%KTcY@tx*Fl4", "roles": ["USER"], "verified": true, "banned": false}' 
+
+2025-11-16 13:49:08 [32mINFO[0m 
+======================================== RESPONSE ========================================
+2025-11-16 13:49:08 [32mINFO[0m 	STATUS_CODE: [32m201[0m
+	DATA:
+{"id":"a3b6686e-b7be-43b0-8025-e1a046bc3029","email":"kekiqy166sb@gmail.com","fullName":"Felicia Curtis","verified":true,"banned":false,"roles":["USER"],"createdAt":"2025-11-16T10:49:07.821Z"}
+2025-11-16 13:49:08 [32mINFO[0m ================================================================================
+
+2025-11-16 13:49:09 [32mINFO[0m 
+======================================== REQUEST ========================================
+2025-11-16 13:49:09 [32mINFO[0m [32mpytest tests/api/test_auth.py::TestUser::test_get_user_by_locator_common_user (setup)[0m
+curl -X POST 'https://auth.dev-cinescope.coconutqa.ru/login/' \
+-H 'User-Agent: python-requests/2.32.5' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+-H 'Content-Length: 68' \
+-d '{"email": "kekiqy166sb@gmail.com", "password": "ymVg7c%KTcY@tx*Fl4"}' 
+
+2025-11-16 13:49:09 [32mINFO[0m 
+======================================== RESPONSE ========================================
+2025-11-16 13:49:09 [32mINFO[0m 	STATUS_CODE: [32m200[0m
+	DATA:
+{"user":{"id":"a3b6686e-b7be-43b0-8025-e1a046bc3029","email":"kekiqy166sb@gmail.com","fullName":"Felicia Curtis","roles":["USER"]},"accessToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImEzYjY2ODZlLWI3YmUtNDNiMC04MDI1LWUxYTA0NmJjMzAyOSIsImVtYWlsIjoia2VraXF5MTY2c2JAZ21haWwuY29tIiwicm9sZXMiOlsiVVNFUiJdLCJ2ZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNzYzMjkwMTQ5LCJleHAiOjE3NjMyOTE5NDl9.vntDF5wIlvT0Aj5MaoyYooeb53H7ltiW-zUDcQDOa3o","refreshToken":"f8b2fe4e-6567-4d2d-b3f7-d559471345e8","expiresIn":1763291949029}
+2025-11-16 13:49:09 [32mINFO[0m ================================================================================
+2025-11-16 13:49:09 [32mINFO[0m 
+======================================== REQUEST ========================================
+2025-11-16 13:49:09 [32mINFO[0m [32mpytest tests/api/test_auth.py::TestUser::test_get_user_by_locator_common_user[0m
+curl -X GET 'https://auth.dev-cinescope.coconutqa.ru/user/kekiqy166sb@gmail.com' \
+-H 'User-Agent: python-requests/2.32.5' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+-H 'authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImEzYjY2ODZlLWI3YmUtNDNiMC04MDI1LWUxYTA0NmJjMzAyOSIsImVtYWlsIjoia2VraXF5MTY2c2JAZ21haWwuY29tIiwicm9sZXMiOlsiVVNFUiJdLCJ2ZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNzYzMjkwMTQ5LCJleHAiOjE3NjMyOTE5NDl9.vntDF5wIlvT0Aj5MaoyYooeb53H7ltiW-zUDcQDOa3o' \
+-H 'Cookie: refresh_token=f8b2fe4e-6567-4d2d-b3f7-d559471345e8' \
+
+2025-11-16 13:49:09 [32mINFO[0m 
+======================================== RESPONSE ========================================
+2025-11-16 13:49:09 [32mINFO[0m 	STATUS_CODE: [32m403[0m
+	DATA:
+{"message":"Forbidden resource","error":"Forbidden","statusCode":403}
+2025-11-16 13:49:09 [32mINFO[0m ================================================================================
+2025-11-16 13:49:09 [32mINFO[0m 
+======================================== REQUEST ========================================
+2025-11-16 13:49:09 [32mINFO[0m [32mpytest tests/api/test_auth.py::TestUser::test_get_user_by_locator_common_user (teardown)[0m
+curl -X DELETE 'https://auth.dev-cinescope.coconutqa.ru//user/a3b6686e-b7be-43b0-8025-e1a046bc3029' \
+-H 'User-Agent: python-requests/2.32.5' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+-H 'authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE3NmI4YmY5LWFmMTMtNDViYi1iMjAwLWI5ZGI4NmRiMjZkMyIsImVtYWlsIjoiYXBpMUBnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIiwiQURNSU4iLCJTVVBFUl9BRE1JTiJdLCJ2ZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNzYzMjkwMTQ3LCJleHAiOjE3NjMyOTE5NDd9.5-Tr1Nu8Zs3i9808JMg4x2D3k4Kq2zp6S22IFasJliA' \
+-H 'Cookie: refresh_token=2a3923a3-1d64-4c36-a7e6-6cde31980832' \
+-H 'Content-Length: 0' \
+
+2025-11-16 13:49:09 [32mINFO[0m 
+======================================== RESPONSE ========================================
+2025-11-16 13:49:09 [32mINFO[0m 	STATUS_CODE: [32m200[0m
+	DATA:
+
+2025-11-16 13:49:09 [32mINFO[0m ================================================================================

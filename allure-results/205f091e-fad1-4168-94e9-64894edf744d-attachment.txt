@@ -1,0 +1,37 @@
+2025-11-16 13:49:04 [32mINFO[0m 
+======================================== REQUEST ========================================
+2025-11-16 13:49:04 [32mINFO[0m [32mpytest tests/api/test_auth.py::TestAuthAPI::test_login_user[0m
+curl -X POST 'https://auth.dev-cinescope.coconutqa.ru/register/' \
+-H 'User-Agent: python-requests/2.32.5' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+-H 'Content-Length: 145' \
+-d '{"email": "keky86h40uz@gmail.com", "fullName": "Juan Gilbert", "password": "Z1s4eSaN7YUAr", "passwordRepeat": "Z1s4eSaN7YUAr", "roles": ["USER"]}' 
+
+2025-11-16 13:49:04 [32mINFO[0m 
+======================================== RESPONSE ========================================
+2025-11-16 13:49:04 [32mINFO[0m 	STATUS_CODE: [32m201[0m
+	DATA:
+{"id":"9b581ddb-f8d8-489e-a138-8a5d7f5540b8","email":"keky86h40uz@gmail.com","fullName":"Juan Gilbert","verified":true,"banned":false,"roles":["USER"],"createdAt":"2025-11-16T10:49:04.519Z"}
+2025-11-16 13:49:04 [32mINFO[0m ================================================================================
+
+2025-11-16 13:49:04 [32mINFO[0m 
+======================================== REQUEST ========================================
+2025-11-16 13:49:04 [32mINFO[0m [32mpytest tests/api/test_auth.py::TestAuthAPI::test_login_user[0m
+curl -X POST 'https://auth.dev-cinescope.coconutqa.ru/login/' \
+-H 'User-Agent: python-requests/2.32.5' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+-H 'Content-Length: 63' \
+-d '{"email": "keky86h40uz@gmail.com", "password": "Z1s4eSaN7YUAr"}' 
+
+2025-11-16 13:49:04 [32mINFO[0m 
+======================================== RESPONSE ========================================
+2025-11-16 13:49:04 [32mINFO[0m 	STATUS_CODE: [32m200[0m
+	DATA:
+{"user":{"id":"9b581ddb-f8d8-489e-a138-8a5d7f5540b8","email":"keky86h40uz@gmail.com","fullName":"Juan Gilbert","roles":["USER"]},"accessToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjliNTgxZGRiLWY4ZDgtNDg5ZS1hMTM4LThhNWQ3ZjU1NDBiOCIsImVtYWlsIjoia2VreTg2aDQwdXpAZ21haWwuY29tIiwicm9sZXMiOlsiVVNFUiJdLCJ2ZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNzYzMjkwMTQ0LCJleHAiOjE3NjMyOTE5NDR9.a3KrWON0HhqBtfgN81QSpBumrrO_M0bav3piAomacxg","refreshToken":"082b49ef-23aa-47ae-bee2-3cde62c9087a","expiresIn":1763291944734}
+2025-11-16 13:49:04 [32mINFO[0m ================================================================================

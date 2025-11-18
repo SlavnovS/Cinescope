@@ -1,0 +1,18 @@
+2025-11-16 13:49:04 [32mINFO[0m 
+======================================== REQUEST ========================================
+2025-11-16 13:49:04 [32mINFO[0m [32mpytest tests/api/test_auth.py::TestAuthAPI::test_register_user[0m
+curl -X POST 'https://auth.dev-cinescope.coconutqa.ru/register/' \
+-H 'User-Agent: python-requests/2.32.5' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+-H 'Content-Length: 144' \
+-d '{"email": "kekz8qg0do3@gmail.com", "fullName": "Ronald Villegas", "password": "Y01dWyX4S&n", "passwordRepeat": "Y01dWyX4S&n", "roles": ["USER"]}' 
+
+2025-11-16 13:49:04 [32mINFO[0m 
+======================================== RESPONSE ========================================
+2025-11-16 13:49:04 [32mINFO[0m 	STATUS_CODE: [32m201[0m
+	DATA:
+{"id":"d8e0d141-dcef-46be-b9ba-59fb8cc0b595","email":"kekz8qg0do3@gmail.com","fullName":"Ronald Villegas","verified":true,"banned":false,"roles":["USER"],"createdAt":"2025-11-16T10:49:04.226Z"}
+2025-11-16 13:49:04 [32mINFO[0m ================================================================================

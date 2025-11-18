@@ -1,0 +1,75 @@
+2025-11-16 09:35:56 [32mINFO[0m 
+======================================== REQUEST ========================================
+2025-11-16 09:35:56 [32mINFO[0m [32mpytest tests/api/test_movies.py::TestMoviesNegative::test_negative_post_movies (setup)[0m
+curl -X POST 'https://auth.dev-cinescope.coconutqa.ru/login/' \
+-H 'User-Agent: python-requests/2.32.5' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+-H 'Content-Length: 53' \
+-d '{"email": "api1@gmail.com", "password": "asdqwe123Q"}' 
+
+2025-11-16 09:35:56 [32mINFO[0m 
+======================================== RESPONSE ========================================
+2025-11-16 09:35:56 [32mINFO[0m 	STATUS_CODE: [32m200[0m
+	DATA:
+{"user":{"id":"a76b8bf9-af13-45bb-b200-b9db86db26d3","email":"api1@gmail.com","fullName":"Админ Кокосовый Куа","roles":["USER","ADMIN","SUPER_ADMIN"]},"accessToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE3NmI4YmY5LWFmMTMtNDViYi1iMjAwLWI5ZGI4NmRiMjZkMyIsImVtYWlsIjoiYXBpMUBnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIiwiQURNSU4iLCJTVVBFUl9BRE1JTiJdLCJ2ZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNzYzMjc0OTU2LCJleHAiOjE3NjMyNzY3NTZ9.D29HOPFpj8MhHi8X6CYugFOLj4Hcl7RbIiCfSuffg6s","refreshToken":"178560fa-db4d-43e5-ace2-804b14084e02","expiresIn":1763276756535}
+2025-11-16 09:35:56 [32mINFO[0m ================================================================================
+
+2025-11-16 09:35:57 [32mINFO[0m 
+======================================== REQUEST ========================================
+2025-11-16 09:35:57 [32mINFO[0m [32mpytest tests/api/test_movies.py::TestMoviesNegative::test_negative_post_movies (setup)[0m
+curl -X POST 'https://api.dev-cinescope.coconutqa.ru/movies/' \
+-H 'User-Agent: python-requests/2.32.5' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+-H 'authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE3NmI4YmY5LWFmMTMtNDViYi1iMjAwLWI5ZGI4NmRiMjZkMyIsImVtYWlsIjoiYXBpMUBnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIiwiQURNSU4iLCJTVVBFUl9BRE1JTiJdLCJ2ZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNzYzMjc0OTU2LCJleHAiOjE3NjMyNzY3NTZ9.D29HOPFpj8MhHi8X6CYugFOLj4Hcl7RbIiCfSuffg6s' \
+-H 'Content-Length: 270' \
+-d '{"name": "The Function-based scalable neural-net", "imageUrl": "https://avatars.mds.yandex.net/i?id=cce8b15040c138004875a832069b6b47_l-5736044-images-thumbs&n=13", "price": 500, "description": "Behavior before leave.", "location": "SPB", "published": true, "genreId": 1}' 
+
+2025-11-16 09:35:57 [32mINFO[0m 
+======================================== RESPONSE ========================================
+2025-11-16 09:35:57 [32mINFO[0m 	STATUS_CODE: [32m201[0m
+	DATA:
+{"id":3422,"name":"The Function-based scalable neural-net","price":500,"description":"Behavior before leave.","imageUrl":"https://avatars.mds.yandex.net/i?id=cce8b15040c138004875a832069b6b47_l-5736044-images-thumbs&n=13","location":"SPB","published":true,"rating":0,"genreId":1,"createdAt":"2025-11-16T06:35:56.934Z","genre":{"name":"Драма"}}
+2025-11-16 09:35:57 [32mINFO[0m ================================================================================
+2025-11-16 09:35:57 [32mINFO[0m 
+======================================== REQUEST ========================================
+2025-11-16 09:35:57 [32mINFO[0m [32mpytest tests/api/test_movies.py::TestMoviesNegative::test_negative_post_movies[0m
+curl -X POST 'https://api.dev-cinescope.coconutqa.ru/movies/' \
+-H 'User-Agent: python-requests/2.32.5' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+-H 'authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE3NmI4YmY5LWFmMTMtNDViYi1iMjAwLWI5ZGI4NmRiMjZkMyIsImVtYWlsIjoiYXBpMUBnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIiwiQURNSU4iLCJTVVBFUl9BRE1JTiJdLCJ2ZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNzYzMjc0OTU2LCJleHAiOjE3NjMyNzY3NTZ9.D29HOPFpj8MhHi8X6CYugFOLj4Hcl7RbIiCfSuffg6s' \
+-H 'Content-Length: 389' \
+-d '{"id": 3422, "name": "The Function-based scalable neural-net", "price": 500, "description": "Behavior before leave.", "imageUrl": "https://avatars.mds.yandex.net/i?id=cce8b15040c138004875a832069b6b47_l-5736044-images-thumbs&n=13", "location": "SPB", "published": true, "rating": 0, "genreId": 1, "createdAt": "2025-11-16T06:35:56.934Z", "genre": {"name": "\u0414\u0440\u0430\u043c\u0430"}}' 
+
+2025-11-16 09:35:57 [32mINFO[0m 
+======================================== RESPONSE ========================================
+2025-11-16 09:35:57 [32mINFO[0m 	STATUS_CODE: [32m409[0m
+	DATA:
+{"message":"Фильм с таким названием уже существует","error":"Conflict","statusCode":409}
+2025-11-16 09:35:57 [32mINFO[0m ================================================================================
+2025-11-16 09:35:57 [32mINFO[0m 
+======================================== REQUEST ========================================
+2025-11-16 09:35:57 [32mINFO[0m [32mpytest tests/api/test_movies.py::TestMoviesNegative::test_negative_post_movies (teardown)[0m
+curl -X DELETE 'https://api.dev-cinescope.coconutqa.ru/movies/3422' \
+-H 'User-Agent: python-requests/2.32.5' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+-H 'authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE3NmI4YmY5LWFmMTMtNDViYi1iMjAwLWI5ZGI4NmRiMjZkMyIsImVtYWlsIjoiYXBpMUBnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIiwiQURNSU4iLCJTVVBFUl9BRE1JTiJdLCJ2ZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNzYzMjc0OTU2LCJleHAiOjE3NjMyNzY3NTZ9.D29HOPFpj8MhHi8X6CYugFOLj4Hcl7RbIiCfSuffg6s' \
+-H 'Content-Length: 0' \
+
+2025-11-16 09:35:57 [32mINFO[0m 
+======================================== RESPONSE ========================================
+2025-11-16 09:35:57 [32mINFO[0m 	STATUS_CODE: [32m200[0m
+	DATA:
+{"id":3422,"name":"The Function-based scalable neural-net","price":500,"description":"Behavior before leave.","imageUrl":"https://avatars.mds.yandex.net/i?id=cce8b15040c138004875a832069b6b47_l-5736044-images-thumbs&n=13","location":"SPB","published":true,"rating":0,"genreId":1,"createdAt":"2025-11-16T06:35:56.934Z","reviews":[],"genre":{"name":"Драма"}}
+2025-11-16 09:35:57 [32mINFO[0m ================================================================================

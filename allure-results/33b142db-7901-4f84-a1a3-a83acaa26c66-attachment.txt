@@ -1,0 +1,16 @@
+2025-11-16 13:49:23 [32mINFO[0m 
+======================================== REQUEST ========================================
+2025-11-16 13:49:23 [32mINFO[0m [32mpytest tests/api/test_movies.py::TestMovies::test_get_movies_with_parametrize_params[500-200, SPB, 5 movie][0m
+curl -X GET 'https://api.dev-cinescope.coconutqa.ru/movies/?maxPrice=500&minPrice=200&locations=SPB&genreld=5&pageSize=5' \
+-H 'User-Agent: python-requests/2.32.5' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+
+2025-11-16 13:49:23 [32mINFO[0m 
+======================================== RESPONSE ========================================
+2025-11-16 13:49:23 [32mINFO[0m 	STATUS_CODE: [32m200[0m
+	DATA:
+{"movies":[{"id":1,"name":"Экспресс Бобрихино - Попускалово","description":"Молодая пара уезжает из своего села в новое село, ибо коров всех съели. На их поиски выдвигается председатель сельхоза Бобрихино из последнего вагона, а из первого вагона наряд ополчения попускаловых вегетарианцев. Бестселлер нашего времени из разряда \"Игры на выживание или как пройти с бутылкой водки мимо охранника Пятерочки\".","genreId":8,"imageUrl":"https://avatars.mds.yandex.net/i?id=6e323e2c4ceb433daa2d86ff33b67332_l-9225904-images-thumbs&n=13","price":345,"rating":0,"location":"SPB","published":true,"createdAt":"2024-08-23T12:50:58.155Z","genre":{"name":"Фэнтези"}},{"id":7,"name":"Побег из Шоушенка","description":"Страх — это кандалы. Надежда — это свобода","genreId":1,"imageUrl":"https://avatars.mds.yandex.net/get-kinopoisk-image/1599028/0b76b2a2-d1c7-4f04-a284-80ff7bb709a4/300x450","price":330,"rating":0,"location":"SPB","published":true,"createdAt":"2024-08-27T07:40:10.463Z","genre":{"name":"Драма"}},{"id":8,"name":"Форрест Гамп","description":"Мир уже никогда не будет прежним, после того как вы увидите его глазами Форреста Гампа","genreId":4,"imageUrl":"https://avatars.mds.yandex.net/get-kinopoisk-image/1599028/3560b757-9b95-45ec-af8c-623972370f9d/300x450","price":300,"rating":0,"location":"SPB","published":true,"createdAt":"2024-08-27T07:40:53.373Z","genre":{"name":"Криминал"}},{"id":9,"name":"Интерстеллар","description":"Следующий шаг человечества станет величайшим","genreId":1,"imageUrl":"https://avatars.mds.yandex.net/get-kinopoisk-image/1600647/430042eb-ee69-4818-aed0-a312400a26bf/300x450","price":300,"rating":0,"location":"SPB","published":true,"createdAt":"2024-08-27T07:41:20.484Z","genre":{"name":"Драма"}},{"id":16,"name":"Унесённые призраками","description":"Тихиро с мамой и папой переезжает в новый дом. Заблудившись по дороге, они оказываются в странном пустынном городе, где их ждет великолепный пир.","genreId":2,"imageUrl":"https://avatars.mds.yandex.net/get-kinopoisk-image/6201401/ae3b699c-3db7-4196-a869-39b610bfe706/300x450","price":300,"rating":5,"location":"SPB","published":true,"createdAt":"2024-08-27T07:41:58.367Z","genre":{"name":"Комедия"}}],"count":267,"page":1,"pageSize":5,"pageCount":54}
+2025-11-16 13:49:23 [32mINFO[0m ================================================================================

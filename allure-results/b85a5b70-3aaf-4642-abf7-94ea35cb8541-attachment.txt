@@ -1,0 +1,39 @@
+2025-11-16 13:49:05 [32mINFO[0m 
+======================================== REQUEST ========================================
+2025-11-16 13:49:05 [32mINFO[0m [32mpytest tests/api/test_auth.py::TestNegativeAuthAPI::test_negative_login_user[0m
+curl -X POST 'https://auth.dev-cinescope.coconutqa.ru/register/' \
+-H 'User-Agent: python-requests/2.32.5' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+-H 'Cookie: refresh_token=082b49ef-23aa-47ae-bee2-3cde62c9087a' \
+-H 'Content-Length: 160' \
+-d '{"email": "kektuo5xyy2@gmail.com", "fullName": "Suzanne Perry", "password": "CcVL@unN4CX6GFs12|:n", "passwordRepeat": "CcVL@unN4CX6GFs12|:n", "roles": ["USER"]}' 
+
+2025-11-16 13:49:05 [32mINFO[0m 
+======================================== RESPONSE ========================================
+2025-11-16 13:49:05 [32mINFO[0m 	STATUS_CODE: [32m201[0m
+	DATA:
+{"id":"0bd48f05-835a-4a32-86ab-f50a7eba5599","email":"kektuo5xyy2@gmail.com","fullName":"Suzanne Perry","verified":true,"banned":false,"roles":["USER"],"createdAt":"2025-11-16T10:49:05.012Z"}
+2025-11-16 13:49:05 [32mINFO[0m ================================================================================
+
+2025-11-16 13:49:05 [32mINFO[0m 
+======================================== REQUEST ========================================
+2025-11-16 13:49:05 [32mINFO[0m [32mpytest tests/api/test_auth.py::TestNegativeAuthAPI::test_negative_login_user[0m
+curl -X POST 'https://auth.dev-cinescope.coconutqa.ru/login/' \
+-H 'User-Agent: python-requests/2.32.5' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+-H 'Cookie: refresh_token=082b49ef-23aa-47ae-bee2-3cde62c9087a' \
+-H 'Content-Length: 150' \
+-d '{"email": "kektuo5xyy2@gmail.com", "fullName": "Suzanne Perry", "password": "CcVL@unN45", "passwordRepeat": "CcVL@unN4CX6GFs12|:n", "roles": ["USER"]}' 
+
+2025-11-16 13:49:05 [32mINFO[0m 
+======================================== RESPONSE ========================================
+2025-11-16 13:49:05 [32mINFO[0m 	STATUS_CODE: [32m401[0m
+	DATA:
+{"message":"Неверный логин или пароль","error":"Unauthorized","statusCode":401}
+2025-11-16 13:49:05 [32mINFO[0m ================================================================================

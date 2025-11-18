@@ -1,0 +1,16 @@
+2025-11-15 10:00:14 [32mINFO[0m 
+======================================== REQUEST ========================================
+2025-11-15 10:00:14 [32mINFO[0m [32mpytest tests/api/test_movies.py::TestMovies::test_get_movies_with_params[0m
+curl -X GET 'https://api.dev-cinescope.coconutqa.ru/movies/?pageSize=4&page=1&minPrice=275&maxPrice=361&locations=MSK&published=true&genreId=1&createdAt=desc' \
+-H 'User-Agent: python-requests/2.32.5' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+
+2025-11-15 10:00:14 [32mINFO[0m 
+======================================== RESPONSE ========================================
+2025-11-15 10:00:14 [32mINFO[0m 	STATUS_CODE: [32m200[0m
+	DATA:
+{"movies":[{"id":3376,"name":"Тестовое кино - Open-source stable protocol","description":"Add song begin hear institution message front. Say difference beautiful.","genreId":1,"imageUrl":"https://picsum.photos/37/118","price":319,"rating":0,"location":"MSK","published":true,"createdAt":"2025-11-14T19:24:18.132Z","genre":{"name":"Драма"}},{"id":3312,"name":"Crime general","description":"Range.","genreId":1,"imageUrl":"https://image.url","price":360,"rating":0,"location":"MSK","published":true,"createdAt":"2025-11-13T14:54:47.715Z","genre":{"name":"Драма"}},{"id":3252,"name":"Wife language Cinema","description":"For stage daughter.","genreId":1,"imageUrl":null,"price":335,"rating":0,"location":"MSK","published":true,"createdAt":"2025-11-11T18:39:41.241Z","genre":{"name":"Драма"}},{"id":3248,"name":"Free base Cinema","description":"Form room if.","genreId":1,"imageUrl":null,"price":334,"rating":0,"location":"MSK","published":true,"createdAt":"2025-11-11T18:39:35.814Z","genre":{"name":"Драма"}}],"count":51,"page":1,"pageSize":4,"pageCount":13}
+2025-11-15 10:00:14 [32mINFO[0m ================================================================================

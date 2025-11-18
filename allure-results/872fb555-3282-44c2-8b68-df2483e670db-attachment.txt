@@ -1,0 +1,16 @@
+2025-11-16 09:36:07 [32mINFO[0m 
+======================================== REQUEST ========================================
+2025-11-16 09:36:07 [32mINFO[0m [32mpytest tests/api/test_movies.py::TestMovies::test_get_movies_with_parametrize_params[750-400-MSK-1][0m
+curl -X GET 'https://api.dev-cinescope.coconutqa.ru/movies/?maxPrice=750&minPrice=400&locations=MSK&genreld=1&pageSize=5' \
+-H 'User-Agent: python-requests/2.32.5' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+
+2025-11-16 09:36:07 [32mINFO[0m 
+======================================== RESPONSE ========================================
+2025-11-16 09:36:07 [32mINFO[0m 	STATUS_CODE: [32m200[0m
+	DATA:
+{"movies":[{"id":208,"name":"Example Party","description":"Accept may find understand maybe might worry ahead begin hand.","genreId":6,"imageUrl":"https://picsum.photos/602/237","price":443,"rating":0,"location":"MSK","published":true,"createdAt":"2025-05-08T17:41:26.972Z","genre":{"name":"Аниме"}},{"id":214,"name":"Blood Course","description":"Reduce moment painting time stock question money suggest.","genreId":10,"imageUrl":"https://picsum.photos/801/481","price":405,"rating":0,"location":"MSK","published":true,"createdAt":"2025-05-08T17:47:16.577Z","genre":{"name":"Военный"}},{"id":243,"name":"Scene Hard","description":"Debate heavy responsibility put action two piece study shoulder decade.","genreId":7,"imageUrl":null,"price":429,"rating":0,"location":"MSK","published":true,"createdAt":"2025-05-09T13:43:08.392Z","genre":{"name":"Мюзикл"}},{"id":312,"name":"Result history not.","description":"Number during think. Table present wall long beyond.\nMovie production more when item artist. Industry base writer professor material candidate. Goal fast job sound test expect.","genreId":7,"imageUrl":"https://placekitten.com/300/300","price":573,"rating":0,"location":"MSK","published":true,"createdAt":"2025-05-11T05:12:56.392Z","genre":{"name":"Мюзикл"}},{"id":314,"name":"Night top challenge.","description":"Then surface any great team instead. Hit sit television.\nRole conference game likely instead.\nLong raise another. Pattern feeling indicate produce culture organization less.","genreId":4,"imageUrl":"https://placekitten.com/300/300","price":448,"rating":0,"location":"MSK","published":true,"createdAt":"2025-05-11T05:15:16.194Z","genre":{"name":"Криминал"}}],"count":108,"page":1,"pageSize":5,"pageCount":22}
+2025-11-16 09:36:07 [32mINFO[0m ================================================================================

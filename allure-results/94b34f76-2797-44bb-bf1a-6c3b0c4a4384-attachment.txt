@@ -1,0 +1,92 @@
+2025-11-16 13:49:30 [32mINFO[0m 
+======================================== REQUEST ========================================
+2025-11-16 13:49:30 [32mINFO[0m [32mpytest tests/api/test_movies.py::TestMoviesNegative::test_negative_patch_movies_by_id (setup)[0m
+curl -X POST 'https://auth.dev-cinescope.coconutqa.ru/login/' \
+-H 'User-Agent: python-requests/2.32.5' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+-H 'Content-Length: 53' \
+-d '{"email": "api1@gmail.com", "password": "asdqwe123Q"}' 
+
+2025-11-16 13:49:30 [32mINFO[0m 
+======================================== RESPONSE ========================================
+2025-11-16 13:49:30 [32mINFO[0m 	STATUS_CODE: [32m200[0m
+	DATA:
+{"user":{"id":"a76b8bf9-af13-45bb-b200-b9db86db26d3","email":"api1@gmail.com","fullName":"Админ Кокосовый Куа","roles":["USER","ADMIN","SUPER_ADMIN"]},"accessToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE3NmI4YmY5LWFmMTMtNDViYi1iMjAwLWI5ZGI4NmRiMjZkMyIsImVtYWlsIjoiYXBpMUBnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIiwiQURNSU4iLCJTVVBFUl9BRE1JTiJdLCJ2ZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNzYzMjkwMTY5LCJleHAiOjE3NjMyOTE5Njl9.fT7vZ9HRnF-yhU7o7-HIadSK-SJ3fitWkxVw2E0ufwY","refreshToken":"30104c4d-6e97-4dc1-acdf-cd4a4229a2aa","expiresIn":1763291969923}
+2025-11-16 13:49:30 [32mINFO[0m ================================================================================
+
+2025-11-16 13:49:30 [32mINFO[0m 
+======================================== REQUEST ========================================
+2025-11-16 13:49:30 [32mINFO[0m [32mpytest tests/api/test_movies.py::TestMoviesNegative::test_negative_patch_movies_by_id (setup)[0m
+curl -X POST 'https://api.dev-cinescope.coconutqa.ru/movies/' \
+-H 'User-Agent: python-requests/2.32.5' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+-H 'authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE3NmI4YmY5LWFmMTMtNDViYi1iMjAwLWI5ZGI4NmRiMjZkMyIsImVtYWlsIjoiYXBpMUBnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIiwiQURNSU4iLCJTVVBFUl9BRE1JTiJdLCJ2ZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNzYzMjkwMTY5LCJleHAiOjE3NjMyOTE5Njl9.fT7vZ9HRnF-yhU7o7-HIadSK-SJ3fitWkxVw2E0ufwY' \
+-H 'Content-Length: 282' \
+-d '{"name": "The Self-enabling 6thgeneration encryption", "imageUrl": "https://avatars.mds.yandex.net/i?id=cce8b15040c138004875a832069b6b47_l-5736044-images-thumbs&n=13", "price": 600, "description": "Never on office standard page.", "location": "SPB", "published": true, "genreId": 1}' 
+
+2025-11-16 13:49:30 [32mINFO[0m 
+======================================== RESPONSE ========================================
+2025-11-16 13:49:30 [32mINFO[0m 	STATUS_CODE: [32m201[0m
+	DATA:
+{"id":3450,"name":"The Self-enabling 6thgeneration encryption","price":600,"description":"Never on office standard page.","imageUrl":"https://avatars.mds.yandex.net/i?id=cce8b15040c138004875a832069b6b47_l-5736044-images-thumbs&n=13","location":"SPB","published":true,"rating":0,"genreId":1,"createdAt":"2025-11-16T10:49:30.472Z","genre":{"name":"Драма"}}
+2025-11-16 13:49:30 [32mINFO[0m ================================================================================
+2025-11-16 13:49:30 [32mINFO[0m 
+======================================== REQUEST ========================================
+2025-11-16 13:49:30 [32mINFO[0m [32mpytest tests/api/test_movies.py::TestMoviesNegative::test_negative_patch_movies_by_id[0m
+curl -X PATCH 'https://api.dev-cinescope.coconutqa.ru/movies/3450' \
+-H 'User-Agent: python-requests/2.32.5' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+-H 'authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE3NmI4YmY5LWFmMTMtNDViYi1iMjAwLWI5ZGI4NmRiMjZkMyIsImVtYWlsIjoiYXBpMUBnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIiwiQURNSU4iLCJTVVBFUl9BRE1JTiJdLCJ2ZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNzYzMjkwMTY5LCJleHAiOjE3NjMyOTE5Njl9.fT7vZ9HRnF-yhU7o7-HIadSK-SJ3fitWkxVw2E0ufwY' \
+-H 'Content-Length: 34' \
+-d '{"location": "Gdov", "price": 350}' 
+
+2025-11-16 13:49:30 [32mINFO[0m 
+======================================== RESPONSE ========================================
+2025-11-16 13:49:30 [32mINFO[0m 	STATUS_CODE: [32m400[0m
+	DATA:
+{"message":["location must be one of the following values: MSK, SPB"],"error":"Bad Request","statusCode":400}
+2025-11-16 13:49:30 [32mINFO[0m ================================================================================
+
+2025-11-16 13:49:30 [32mINFO[0m 
+======================================== REQUEST ========================================
+2025-11-16 13:49:30 [32mINFO[0m [32mpytest tests/api/test_movies.py::TestMoviesNegative::test_negative_patch_movies_by_id[0m
+curl -X GET 'https://api.dev-cinescope.coconutqa.ru/movies/3450' \
+-H 'User-Agent: python-requests/2.32.5' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+
+2025-11-16 13:49:30 [32mINFO[0m 
+======================================== RESPONSE ========================================
+2025-11-16 13:49:30 [32mINFO[0m 	STATUS_CODE: [32m200[0m
+	DATA:
+{"id":3450,"name":"The Self-enabling 6thgeneration encryption","price":600,"description":"Never on office standard page.","imageUrl":"https://avatars.mds.yandex.net/i?id=cce8b15040c138004875a832069b6b47_l-5736044-images-thumbs&n=13","location":"SPB","published":true,"rating":0,"genreId":1,"createdAt":"2025-11-16T10:49:30.472Z","reviews":[],"genre":{"name":"Драма"}}
+2025-11-16 13:49:30 [32mINFO[0m ================================================================================
+2025-11-16 13:49:30 [32mINFO[0m 
+======================================== REQUEST ========================================
+2025-11-16 13:49:30 [32mINFO[0m [32mpytest tests/api/test_movies.py::TestMoviesNegative::test_negative_patch_movies_by_id (teardown)[0m
+curl -X DELETE 'https://api.dev-cinescope.coconutqa.ru/movies/3450' \
+-H 'User-Agent: python-requests/2.32.5' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+-H 'authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE3NmI4YmY5LWFmMTMtNDViYi1iMjAwLWI5ZGI4NmRiMjZkMyIsImVtYWlsIjoiYXBpMUBnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIiwiQURNSU4iLCJTVVBFUl9BRE1JTiJdLCJ2ZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNzYzMjkwMTY5LCJleHAiOjE3NjMyOTE5Njl9.fT7vZ9HRnF-yhU7o7-HIadSK-SJ3fitWkxVw2E0ufwY' \
+-H 'Content-Length: 0' \
+
+2025-11-16 13:49:30 [32mINFO[0m 
+======================================== RESPONSE ========================================
+2025-11-16 13:49:30 [32mINFO[0m 	STATUS_CODE: [32m200[0m
+	DATA:
+{"id":3450,"name":"The Self-enabling 6thgeneration encryption","price":600,"description":"Never on office standard page.","imageUrl":"https://avatars.mds.yandex.net/i?id=cce8b15040c138004875a832069b6b47_l-5736044-images-thumbs&n=13","location":"SPB","published":true,"rating":0,"genreId":1,"createdAt":"2025-11-16T10:49:30.472Z","reviews":[],"genre":{"name":"Драма"}}
+2025-11-16 13:49:30 [32mINFO[0m ================================================================================

@@ -1,0 +1,153 @@
+2025-11-16 09:35:58 [32mINFO[0m 
+======================================== REQUEST ========================================
+2025-11-16 09:35:58 [32mINFO[0m [32mpytest tests/api/test_movies.py::TestMoviesNegative::test_negative_del_movies_by_id (setup)[0m
+curl -X POST 'https://auth.dev-cinescope.coconutqa.ru/login/' \
+-H 'User-Agent: python-requests/2.32.5' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+-H 'Content-Length: 53' \
+-d '{"email": "api1@gmail.com", "password": "asdqwe123Q"}' 
+
+2025-11-16 09:35:58 [32mINFO[0m 
+======================================== RESPONSE ========================================
+2025-11-16 09:35:58 [32mINFO[0m 	STATUS_CODE: [32m200[0m
+	DATA:
+{"user":{"id":"a76b8bf9-af13-45bb-b200-b9db86db26d3","email":"api1@gmail.com","fullName":"Админ Кокосовый Куа","roles":["USER","ADMIN","SUPER_ADMIN"]},"accessToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE3NmI4YmY5LWFmMTMtNDViYi1iMjAwLWI5ZGI4NmRiMjZkMyIsImVtYWlsIjoiYXBpMUBnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIiwiQURNSU4iLCJTVVBFUl9BRE1JTiJdLCJ2ZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNzYzMjc0OTU4LCJleHAiOjE3NjMyNzY3NTh9.pd3Va6qlZDKXw8WMTmjNmUY5f9Rsyk-Sfqj5diW-L30","refreshToken":"abc37976-1aba-40b5-9012-581043d83529","expiresIn":1763276758840}
+2025-11-16 09:35:58 [32mINFO[0m ================================================================================
+
+2025-11-16 09:35:59 [32mINFO[0m 
+======================================== REQUEST ========================================
+2025-11-16 09:35:59 [32mINFO[0m [32mpytest tests/api/test_movies.py::TestMoviesNegative::test_negative_del_movies_by_id (setup)[0m
+curl -X POST 'https://auth.dev-cinescope.coconutqa.ru/user/' \
+-H 'User-Agent: python-requests/2.32.5' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+-H 'authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE3NmI4YmY5LWFmMTMtNDViYi1iMjAwLWI5ZGI4NmRiMjZkMyIsImVtYWlsIjoiYXBpMUBnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIiwiQURNSU4iLCJTVVBFUl9BRE1JTiJdLCJ2ZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNzYzMjc0OTU4LCJleHAiOjE3NjMyNzY3NTh9.pd3Va6qlZDKXw8WMTmjNmUY5f9Rsyk-Sfqj5diW-L30' \
+-H 'Cookie: refresh_token=abc37976-1aba-40b5-9012-581043d83529' \
+-H 'Content-Length: 172' \
+-d '{"email": "kekzz1bzce7@gmail.com", "fullName": "Matthew Obrien", "password": "j42SY3CS", "passwordRepeat": "j42SY3CS", "roles": ["USER"], "verified": true, "banned": false}' 
+
+2025-11-16 09:35:59 [32mINFO[0m 
+======================================== RESPONSE ========================================
+2025-11-16 09:35:59 [32mINFO[0m 	STATUS_CODE: [32m201[0m
+	DATA:
+{"id":"31e6f621-763f-4653-8d5c-a99e277a6b95","email":"kekzz1bzce7@gmail.com","fullName":"Matthew Obrien","verified":true,"banned":false,"roles":["USER"],"createdAt":"2025-11-16T06:35:59.115Z"}
+2025-11-16 09:35:59 [32mINFO[0m ================================================================================
+
+2025-11-16 09:35:59 [32mINFO[0m 
+======================================== REQUEST ========================================
+2025-11-16 09:35:59 [32mINFO[0m [32mpytest tests/api/test_movies.py::TestMoviesNegative::test_negative_del_movies_by_id (setup)[0m
+curl -X POST 'https://auth.dev-cinescope.coconutqa.ru/login/' \
+-H 'User-Agent: python-requests/2.32.5' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+-H 'Content-Length: 58' \
+-d '{"email": "kekzz1bzce7@gmail.com", "password": "j42SY3CS"}' 
+
+2025-11-16 09:35:59 [32mINFO[0m 
+======================================== RESPONSE ========================================
+2025-11-16 09:35:59 [32mINFO[0m 	STATUS_CODE: [32m200[0m
+	DATA:
+{"user":{"id":"31e6f621-763f-4653-8d5c-a99e277a6b95","email":"kekzz1bzce7@gmail.com","fullName":"Matthew Obrien","roles":["USER"]},"accessToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMxZTZmNjIxLTc2M2YtNDY1My04ZDVjLWE5OWUyNzdhNmI5NSIsImVtYWlsIjoia2VrenoxYnpjZTdAZ21haWwuY29tIiwicm9sZXMiOlsiVVNFUiJdLCJ2ZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNzYzMjc0OTU5LCJleHAiOjE3NjMyNzY3NTl9.ZVOu5J0XBp1fFZYStndmgd5wGJvJvTaO6xFSuWl770o","refreshToken":"0a4671eb-4d15-4011-b6f8-a6977bd2f33e","expiresIn":1763276759659}
+2025-11-16 09:35:59 [32mINFO[0m ================================================================================
+
+2025-11-16 09:36:00 [32mINFO[0m 
+======================================== REQUEST ========================================
+2025-11-16 09:36:00 [32mINFO[0m [32mpytest tests/api/test_movies.py::TestMoviesNegative::test_negative_del_movies_by_id (setup)[0m
+curl -X POST 'https://api.dev-cinescope.coconutqa.ru/movies/' \
+-H 'User-Agent: python-requests/2.32.5' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+-H 'authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE3NmI4YmY5LWFmMTMtNDViYi1iMjAwLWI5ZGI4NmRiMjZkMyIsImVtYWlsIjoiYXBpMUBnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIiwiQURNSU4iLCJTVVBFUl9BRE1JTiJdLCJ2ZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNzYzMjc0OTU4LCJleHAiOjE3NjMyNzY3NTh9.pd3Va6qlZDKXw8WMTmjNmUY5f9Rsyk-Sfqj5diW-L30' \
+-H 'Content-Length: 275' \
+-d '{"name": "The Public-key analyzing migration", "imageUrl": "https://avatars.mds.yandex.net/i?id=cce8b15040c138004875a832069b6b47_l-5736044-images-thumbs&n=13", "price": 500, "description": "Power spend decision available.", "location": "SPB", "published": true, "genreId": 1}' 
+
+2025-11-16 09:36:00 [32mINFO[0m 
+======================================== RESPONSE ========================================
+2025-11-16 09:36:00 [32mINFO[0m 	STATUS_CODE: [32m201[0m
+	DATA:
+{"id":3424,"name":"The Public-key analyzing migration","price":500,"description":"Power spend decision available.","imageUrl":"https://avatars.mds.yandex.net/i?id=cce8b15040c138004875a832069b6b47_l-5736044-images-thumbs&n=13","location":"SPB","published":true,"rating":0,"genreId":1,"createdAt":"2025-11-16T06:36:00.031Z","genre":{"name":"Драма"}}
+2025-11-16 09:36:00 [32mINFO[0m ================================================================================
+2025-11-16 09:36:00 [32mINFO[0m 
+======================================== REQUEST ========================================
+2025-11-16 09:36:00 [32mINFO[0m [32mpytest tests/api/test_movies.py::TestMoviesNegative::test_negative_del_movies_by_id[0m
+curl -X DELETE 'https://api.dev-cinescope.coconutqa.ru/movies/aaa' \
+-H 'User-Agent: python-requests/2.32.5' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+-H 'authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE3NmI4YmY5LWFmMTMtNDViYi1iMjAwLWI5ZGI4NmRiMjZkMyIsImVtYWlsIjoiYXBpMUBnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIiwiQURNSU4iLCJTVVBFUl9BRE1JTiJdLCJ2ZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNzYzMjc0OTU4LCJleHAiOjE3NjMyNzY3NTh9.pd3Va6qlZDKXw8WMTmjNmUY5f9Rsyk-Sfqj5diW-L30' \
+-H 'Content-Length: 0' \
+
+2025-11-16 09:36:00 [32mINFO[0m 
+======================================== RESPONSE ========================================
+2025-11-16 09:36:00 [32mINFO[0m 	STATUS_CODE: [32m404[0m
+	DATA:
+{"message":"Фильм не найден","error":"Not Found","statusCode":404}
+2025-11-16 09:36:00 [32mINFO[0m ================================================================================
+
+2025-11-16 09:36:00 [32mINFO[0m 
+======================================== REQUEST ========================================
+2025-11-16 09:36:00 [32mINFO[0m [32mpytest tests/api/test_movies.py::TestMoviesNegative::test_negative_del_movies_by_id[0m
+curl -X DELETE 'https://api.dev-cinescope.coconutqa.ru/movies/3424' \
+-H 'User-Agent: python-requests/2.32.5' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+-H 'authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMxZTZmNjIxLTc2M2YtNDY1My04ZDVjLWE5OWUyNzdhNmI5NSIsImVtYWlsIjoia2VrenoxYnpjZTdAZ21haWwuY29tIiwicm9sZXMiOlsiVVNFUiJdLCJ2ZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNzYzMjc0OTU5LCJleHAiOjE3NjMyNzY3NTl9.ZVOu5J0XBp1fFZYStndmgd5wGJvJvTaO6xFSuWl770o' \
+-H 'Content-Length: 0' \
+
+2025-11-16 09:36:00 [32mINFO[0m 
+======================================== RESPONSE ========================================
+2025-11-16 09:36:00 [32mINFO[0m 	STATUS_CODE: [32m403[0m
+	DATA:
+{"message":"Forbidden resource","error":"Forbidden","statusCode":403}
+2025-11-16 09:36:00 [32mINFO[0m ================================================================================
+2025-11-16 09:36:00 [32mINFO[0m 
+======================================== REQUEST ========================================
+2025-11-16 09:36:00 [32mINFO[0m [32mpytest tests/api/test_movies.py::TestMoviesNegative::test_negative_del_movies_by_id (teardown)[0m
+curl -X DELETE 'https://api.dev-cinescope.coconutqa.ru/movies/3424' \
+-H 'User-Agent: python-requests/2.32.5' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+-H 'authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE3NmI4YmY5LWFmMTMtNDViYi1iMjAwLWI5ZGI4NmRiMjZkMyIsImVtYWlsIjoiYXBpMUBnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIiwiQURNSU4iLCJTVVBFUl9BRE1JTiJdLCJ2ZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNzYzMjc0OTU4LCJleHAiOjE3NjMyNzY3NTh9.pd3Va6qlZDKXw8WMTmjNmUY5f9Rsyk-Sfqj5diW-L30' \
+-H 'Content-Length: 0' \
+
+2025-11-16 09:36:00 [32mINFO[0m 
+======================================== RESPONSE ========================================
+2025-11-16 09:36:00 [32mINFO[0m 	STATUS_CODE: [32m200[0m
+	DATA:
+{"id":3424,"name":"The Public-key analyzing migration","price":500,"description":"Power spend decision available.","imageUrl":"https://avatars.mds.yandex.net/i?id=cce8b15040c138004875a832069b6b47_l-5736044-images-thumbs&n=13","location":"SPB","published":true,"rating":0,"genreId":1,"createdAt":"2025-11-16T06:36:00.031Z","reviews":[],"genre":{"name":"Драма"}}
+2025-11-16 09:36:00 [32mINFO[0m ================================================================================
+
+2025-11-16 09:36:00 [32mINFO[0m 
+======================================== REQUEST ========================================
+2025-11-16 09:36:00 [32mINFO[0m [32mpytest tests/api/test_movies.py::TestMoviesNegative::test_negative_del_movies_by_id (teardown)[0m
+curl -X DELETE 'https://auth.dev-cinescope.coconutqa.ru//user/31e6f621-763f-4653-8d5c-a99e277a6b95' \
+-H 'User-Agent: python-requests/2.32.5' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+-H 'authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE3NmI4YmY5LWFmMTMtNDViYi1iMjAwLWI5ZGI4NmRiMjZkMyIsImVtYWlsIjoiYXBpMUBnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIiwiQURNSU4iLCJTVVBFUl9BRE1JTiJdLCJ2ZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNzYzMjc0OTU4LCJleHAiOjE3NjMyNzY3NTh9.pd3Va6qlZDKXw8WMTmjNmUY5f9Rsyk-Sfqj5diW-L30' \
+-H 'Cookie: refresh_token=abc37976-1aba-40b5-9012-581043d83529' \
+-H 'Content-Length: 0' \
+
+2025-11-16 09:36:00 [32mINFO[0m 
+======================================== RESPONSE ========================================
+2025-11-16 09:36:00 [32mINFO[0m 	STATUS_CODE: [32m200[0m
+	DATA:
+
+2025-11-16 09:36:00 [32mINFO[0m ================================================================================

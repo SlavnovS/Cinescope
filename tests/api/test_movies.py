@@ -1,3 +1,4 @@
+import time
 from http.client import responses
 from pytest_check import check, equal
 import allure
@@ -35,7 +36,8 @@ class TestMovies:
     @allure.title("Тест получения списка фильмов с параметризацией")
     @allure.description("Тест проверяет получение списка фильмов по параметрам "
                         "используя параметризацию пайтеста")
-    @pytest.mark.parametrize("maxPrice,minPrice,locations,genreld", [(750, 400, 'MSK', 1), (500, 200, 'SPB', 5), ])
+    @pytest.mark.parametrize("maxPrice,minPrice,locations,genreld", [(750, 400, 'MSK', 1), (500, 200, 'SPB', 5), ],
+                             ids=["750-400, MSK, 1 movie", "500-200, SPB, 5 movie"])
     def test_get_movies_with_parametrize_params(self, api_manager, maxPrice, minPrice, locations, genreld):
         """ Тест получения списка фильмов """
         response = api_manager.movies_api.get_movies(
@@ -180,18 +182,39 @@ class TestMoviesDB:
     @allure.description("Тест проверяет возможность изменить фильм по ID и применяемость изменений")
     def test_patch_movies_by_id(self, super_admin, api_manager, created_movie, db_helper):
         """ Тест редактирования фильма по ID. """
-        assert db_helper.get_movie_by_id(created_movie["id"]), "фильма нет в БД"
-        movie_data = {"name": 'Californication',
-                      "price": 350}
-        super_admin.api.movies_api.patch_movies_by_id(movi_id=created_movie['id'],
-                                                      movi_data=movie_data)
+        with allure.step("Проверяю что фильм есть в БД"):
+            assert db_helper.get_movie_by_id(created_movie["id"]), "фильма нет в БД"
+            movie_data = {"name": 'Californication',
+                          "price": 350}
+        with allure.step("Меняю название и стоимость фильма"):
+            super_admin.api.movies_api.patch_movies_by_id(movi_id=created_movie['id'],
+                                                          movi_data=movie_data)
         get_response = api_manager.movies_api.get_movies_by_id(created_movie['id'])
         response_db = db_helper.get_movie_by_id(created_movie["id"])
-        with check:
-            msg = "Имя фильма не совпадает с ожидаемым"
-            check.equal(response_db.name, movie_data["name"], msg)
-            check.equal(get_response.json()["name"], movie_data["name"]), "не поменялось название фильма"
-            check.equal(get_response.json()["price"], movie_data["price"]), "не поменялась стоимость фильма"
+        with allure.step("проверяю соответствие изменения введенным параметрам"):
+            with check:
+                msg = "Имя фильма не совпадает с ожидаемым"
+                check.equal(response_db.name, movie_data["name"], msg)
+                check.equal(get_response.json()["name"], movie_data["name"]), "не поменялось название фильма"
+                check.equal(get_response.json()["price"], movie_data["price"]), "не поменялась стоимость фильма"
 
+    # def test_post_movies(self, super_admin, api_manager, movie_data, db_helper):
+    #     """ Тест поста нового фильма с проверкой работы БД"""
+    #     a = time.time()
+    #     assert not db_helper.get_movie_by_name(movie_data['name']), "такой фильм есть в БД"
+    #     json_response = super_admin.api.movies_api.post_movies(movie_data).json()
+    #     movi_id = json_response['id']
+    #     print(f"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA{db_helper.get_movie_name_by_id(movi_id)}"), "фильм не добавился в БД"
+    #     b = time.time()
+    #     print(f"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA{b - a}")
+
+    def test_olo(self, db_helper):
+        db_response = db_helper.get_movie_by_name("Список Шиндлера")
+        id_movie = db_response.to_dict()["id"]
+        print(f"AAAAAAAAAAAAAAAAAAA{db_response}")
+
+    def test_get_movie_name_by_id(self, db_helper):
+        db_response = db_helper.get_movie_by_id('11')
+        print(f"AAAAAAAAAAAAAAAAAAAAA{db_response}")
 
 

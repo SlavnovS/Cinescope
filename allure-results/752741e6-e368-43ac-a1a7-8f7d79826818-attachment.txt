@@ -1,0 +1,16 @@
+2025-11-16 13:49:23 [32mINFO[0m 
+======================================== REQUEST ========================================
+2025-11-16 13:49:23 [32mINFO[0m [32mpytest tests/api/test_movies.py::TestMovies::test_get_movies_with_params[0m
+curl -X GET 'https://api.dev-cinescope.coconutqa.ru/movies/?pageSize=2&page=1&minPrice=268&maxPrice=467&locations=SPB&published=true&genreId=1&createdAt=desc' \
+-H 'User-Agent: python-requests/2.32.5' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+
+2025-11-16 13:49:23 [32mINFO[0m 
+======================================== RESPONSE ========================================
+2025-11-16 13:49:23 [32mINFO[0m 	STATUS_CODE: [32m200[0m
+	DATA:
+{"movies":[{"id":3378,"name":"Тестовое кино - Monitored fresh-thinking data-warehouse","description":"Of difference word live college. Understand sit already full instead five.","genreId":1,"imageUrl":"https://picsum.photos/765/1","price":419,"rating":3,"location":"SPB","published":true,"createdAt":"2025-11-14T19:24:25.571Z","genre":{"name":"Драма"}},{"id":3334,"name":"Room avoid","description":"Late case.","genreId":1,"imageUrl":"https://image.url","price":350,"rating":0,"location":"SPB","published":true,"createdAt":"2025-11-14T16:37:30.130Z","genre":{"name":"Драма"}}],"count":123,"page":1,"pageSize":2,"pageCount":62}
+2025-11-16 13:49:23 [32mINFO[0m ================================================================================

@@ -1,0 +1,73 @@
+2025-11-15 09:57:14 [32mINFO[0m 
+======================================== REQUEST ========================================
+2025-11-15 09:57:14 [32mINFO[0m [32mpytest tests/api/test_movies.py::TestMovies::test_post_movies (setup)[0m
+curl -X POST 'https://auth.dev-cinescope.coconutqa.ru/login/' \
+-H 'User-Agent: python-requests/2.32.5' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+-H 'Content-Length: 53' \
+-d '{"email": "api1@gmail.com", "password": "asdqwe123Q"}' 
+
+2025-11-15 09:57:14 [32mINFO[0m 
+======================================== RESPONSE ========================================
+2025-11-15 09:57:14 [32mINFO[0m 	STATUS_CODE: [32m200[0m
+	DATA:
+{"user":{"id":"a76b8bf9-af13-45bb-b200-b9db86db26d3","email":"api1@gmail.com","fullName":"Админ Кокосовый Куа","roles":["USER","ADMIN","SUPER_ADMIN"]},"accessToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE3NmI4YmY5LWFmMTMtNDViYi1iMjAwLWI5ZGI4NmRiMjZkMyIsImVtYWlsIjoiYXBpMUBnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIiwiQURNSU4iLCJTVVBFUl9BRE1JTiJdLCJ2ZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNzYzMTg5ODM0LCJleHAiOjE3NjMxOTE2MzR9.ZBIntUsbUCT-OXBso3yB-tOpKVkyrCh_u5HJ0AKiefo","refreshToken":"8a25d495-40a7-4e5d-aac0-e1e880f69b77","expiresIn":1763191634336}
+2025-11-15 09:57:14 [32mINFO[0m ================================================================================
+2025-11-15 09:57:14 [32mINFO[0m 
+======================================== REQUEST ========================================
+2025-11-15 09:57:14 [32mINFO[0m [32mpytest tests/api/test_movies.py::TestMovies::test_post_movies[0m
+curl -X POST 'https://api.dev-cinescope.coconutqa.ru/movies/' \
+-H 'User-Agent: python-requests/2.32.5' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+-H 'authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE3NmI4YmY5LWFmMTMtNDViYi1iMjAwLWI5ZGI4NmRiMjZkMyIsImVtYWlsIjoiYXBpMUBnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIiwiQURNSU4iLCJTVVBFUl9BRE1JTiJdLCJ2ZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNzYzMTg5ODM0LCJleHAiOjE3NjMxOTE2MzR9.ZBIntUsbUCT-OXBso3yB-tOpKVkyrCh_u5HJ0AKiefo' \
+-H 'Content-Length: 284' \
+-d '{"name": "The Open-source context-sensitive structure", "imageUrl": "https://avatars.mds.yandex.net/i?id=cce8b15040c138004875a832069b6b47_l-5736044-images-thumbs&n=13", "price": 250, "description": "Long lose candidate every land.", "location": "SPB", "published": true, "genreId": 1}' 
+
+2025-11-15 09:57:14 [32mINFO[0m 
+======================================== RESPONSE ========================================
+2025-11-15 09:57:14 [32mINFO[0m 	STATUS_CODE: [32m201[0m
+	DATA:
+{"id":3405,"name":"The Open-source context-sensitive structure","price":250,"description":"Long lose candidate every land.","imageUrl":"https://avatars.mds.yandex.net/i?id=cce8b15040c138004875a832069b6b47_l-5736044-images-thumbs&n=13","location":"SPB","published":true,"rating":0,"genreId":1,"createdAt":"2025-11-15T06:57:14.724Z","genre":{"name":"Драма"}}
+2025-11-15 09:57:14 [32mINFO[0m ================================================================================
+
+2025-11-15 09:57:14 [32mINFO[0m 
+======================================== REQUEST ========================================
+2025-11-15 09:57:14 [32mINFO[0m [32mpytest tests/api/test_movies.py::TestMovies::test_post_movies[0m
+curl -X GET 'https://api.dev-cinescope.coconutqa.ru/movies/3405' \
+-H 'User-Agent: python-requests/2.32.5' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+
+2025-11-15 09:57:14 [32mINFO[0m 
+======================================== RESPONSE ========================================
+2025-11-15 09:57:14 [32mINFO[0m 	STATUS_CODE: [32m200[0m
+	DATA:
+{"id":3405,"name":"The Open-source context-sensitive structure","price":250,"description":"Long lose candidate every land.","imageUrl":"https://avatars.mds.yandex.net/i?id=cce8b15040c138004875a832069b6b47_l-5736044-images-thumbs&n=13","location":"SPB","published":true,"rating":0,"genreId":1,"createdAt":"2025-11-15T06:57:14.724Z","reviews":[],"genre":{"name":"Драма"}}
+2025-11-15 09:57:14 [32mINFO[0m ================================================================================
+
+2025-11-15 09:57:14 [32mINFO[0m 
+======================================== REQUEST ========================================
+2025-11-15 09:57:14 [32mINFO[0m [32mpytest tests/api/test_movies.py::TestMovies::test_post_movies[0m
+curl -X DELETE 'https://api.dev-cinescope.coconutqa.ru/movies/3405' \
+-H 'User-Agent: python-requests/2.32.5' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+-H 'authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE3NmI4YmY5LWFmMTMtNDViYi1iMjAwLWI5ZGI4NmRiMjZkMyIsImVtYWlsIjoiYXBpMUBnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIiwiQURNSU4iLCJTVVBFUl9BRE1JTiJdLCJ2ZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNzYzMTg5ODM0LCJleHAiOjE3NjMxOTE2MzR9.ZBIntUsbUCT-OXBso3yB-tOpKVkyrCh_u5HJ0AKiefo' \
+-H 'Content-Length: 0' \
+
+2025-11-15 09:57:14 [32mINFO[0m 
+======================================== RESPONSE ========================================
+2025-11-15 09:57:14 [32mINFO[0m 	STATUS_CODE: [32m200[0m
+	DATA:
+{"id":3405,"name":"The Open-source context-sensitive structure","price":250,"description":"Long lose candidate every land.","imageUrl":"https://avatars.mds.yandex.net/i?id=cce8b15040c138004875a832069b6b47_l-5736044-images-thumbs&n=13","location":"SPB","published":true,"rating":0,"genreId":1,"createdAt":"2025-11-15T06:57:14.724Z","reviews":[],"genre":{"name":"Драма"}}
+2025-11-15 09:57:14 [32mINFO[0m ================================================================================

@@ -1,0 +1,73 @@
+2025-11-16 13:49:24 [32mINFO[0m 
+======================================== REQUEST ========================================
+2025-11-16 13:49:24 [32mINFO[0m [32mpytest tests/api/test_movies.py::TestMovies::test_post_movies (setup)[0m
+curl -X POST 'https://auth.dev-cinescope.coconutqa.ru/login/' \
+-H 'User-Agent: python-requests/2.32.5' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+-H 'Content-Length: 53' \
+-d '{"email": "api1@gmail.com", "password": "asdqwe123Q"}' 
+
+2025-11-16 13:49:24 [32mINFO[0m 
+======================================== RESPONSE ========================================
+2025-11-16 13:49:24 [32mINFO[0m 	STATUS_CODE: [32m200[0m
+	DATA:
+{"user":{"id":"a76b8bf9-af13-45bb-b200-b9db86db26d3","email":"api1@gmail.com","fullName":"Админ Кокосовый Куа","roles":["USER","ADMIN","SUPER_ADMIN"]},"accessToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE3NmI4YmY5LWFmMTMtNDViYi1iMjAwLWI5ZGI4NmRiMjZkMyIsImVtYWlsIjoiYXBpMUBnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIiwiQURNSU4iLCJTVVBFUl9BRE1JTiJdLCJ2ZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNzYzMjkwMTY0LCJleHAiOjE3NjMyOTE5NjR9.M9RVVJPIA3hqw79KiACPkUVKOkILkJx2iwWU0Vx6QJo","refreshToken":"38b437e7-c51e-4891-a19a-7b39805e59b1","expiresIn":1763291964327}
+2025-11-16 13:49:24 [32mINFO[0m ================================================================================
+2025-11-16 13:49:24 [32mINFO[0m 
+======================================== REQUEST ========================================
+2025-11-16 13:49:24 [32mINFO[0m [32mpytest tests/api/test_movies.py::TestMovies::test_post_movies[0m
+curl -X POST 'https://api.dev-cinescope.coconutqa.ru/movies/' \
+-H 'User-Agent: python-requests/2.32.5' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+-H 'authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE3NmI4YmY5LWFmMTMtNDViYi1iMjAwLWI5ZGI4NmRiMjZkMyIsImVtYWlsIjoiYXBpMUBnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIiwiQURNSU4iLCJTVVBFUl9BRE1JTiJdLCJ2ZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNzYzMjkwMTY0LCJleHAiOjE3NjMyOTE5NjR9.M9RVVJPIA3hqw79KiACPkUVKOkILkJx2iwWU0Vx6QJo' \
+-H 'Content-Length: 266' \
+-d '{"name": "The Cross-group scalable knowledge user", "imageUrl": "https://avatars.mds.yandex.net/i?id=cce8b15040c138004875a832069b6b47_l-5736044-images-thumbs&n=13", "price": 600, "description": "Easy mission hot.", "location": "MSK", "published": true, "genreId": 1}' 
+
+2025-11-16 13:49:24 [32mINFO[0m 
+======================================== RESPONSE ========================================
+2025-11-16 13:49:24 [32mINFO[0m 	STATUS_CODE: [32m201[0m
+	DATA:
+{"id":3445,"name":"The Cross-group scalable knowledge user","price":600,"description":"Easy mission hot.","imageUrl":"https://avatars.mds.yandex.net/i?id=cce8b15040c138004875a832069b6b47_l-5736044-images-thumbs&n=13","location":"MSK","published":true,"rating":0,"genreId":1,"createdAt":"2025-11-16T10:49:24.729Z","genre":{"name":"Драма"}}
+2025-11-16 13:49:24 [32mINFO[0m ================================================================================
+
+2025-11-16 13:49:24 [32mINFO[0m 
+======================================== REQUEST ========================================
+2025-11-16 13:49:24 [32mINFO[0m [32mpytest tests/api/test_movies.py::TestMovies::test_post_movies[0m
+curl -X GET 'https://api.dev-cinescope.coconutqa.ru/movies/3445' \
+-H 'User-Agent: python-requests/2.32.5' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+
+2025-11-16 13:49:24 [32mINFO[0m 
+======================================== RESPONSE ========================================
+2025-11-16 13:49:24 [32mINFO[0m 	STATUS_CODE: [32m200[0m
+	DATA:
+{"id":3445,"name":"The Cross-group scalable knowledge user","price":600,"description":"Easy mission hot.","imageUrl":"https://avatars.mds.yandex.net/i?id=cce8b15040c138004875a832069b6b47_l-5736044-images-thumbs&n=13","location":"MSK","published":true,"rating":0,"genreId":1,"createdAt":"2025-11-16T10:49:24.729Z","reviews":[],"genre":{"name":"Драма"}}
+2025-11-16 13:49:24 [32mINFO[0m ================================================================================
+
+2025-11-16 13:49:24 [32mINFO[0m 
+======================================== REQUEST ========================================
+2025-11-16 13:49:24 [32mINFO[0m [32mpytest tests/api/test_movies.py::TestMovies::test_post_movies[0m
+curl -X DELETE 'https://api.dev-cinescope.coconutqa.ru/movies/3445' \
+-H 'User-Agent: python-requests/2.32.5' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+-H 'authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE3NmI4YmY5LWFmMTMtNDViYi1iMjAwLWI5ZGI4NmRiMjZkMyIsImVtYWlsIjoiYXBpMUBnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIiwiQURNSU4iLCJTVVBFUl9BRE1JTiJdLCJ2ZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNzYzMjkwMTY0LCJleHAiOjE3NjMyOTE5NjR9.M9RVVJPIA3hqw79KiACPkUVKOkILkJx2iwWU0Vx6QJo' \
+-H 'Content-Length: 0' \
+
+2025-11-16 13:49:24 [32mINFO[0m 
+======================================== RESPONSE ========================================
+2025-11-16 13:49:24 [32mINFO[0m 	STATUS_CODE: [32m200[0m
+	DATA:
+{"id":3445,"name":"The Cross-group scalable knowledge user","price":600,"description":"Easy mission hot.","imageUrl":"https://avatars.mds.yandex.net/i?id=cce8b15040c138004875a832069b6b47_l-5736044-images-thumbs&n=13","location":"MSK","published":true,"rating":0,"genreId":1,"createdAt":"2025-11-16T10:49:24.729Z","reviews":[],"genre":{"name":"Драма"}}
+2025-11-16 13:49:24 [32mINFO[0m ================================================================================
