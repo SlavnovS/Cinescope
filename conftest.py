@@ -156,3 +156,4 @@ def created_test_user(db_helper):
     if db_helper.get_user_by_id(user.id):
         db_helper.delete_user(user)
 
+

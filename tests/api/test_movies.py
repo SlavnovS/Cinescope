@@ -1,3 +1,4 @@
+import time
 from http.client import responses
 from pytest_check import check, equal
 import allure
@@ -35,7 +36,8 @@ class TestMovies:
     @allure.title("Тест получения списка фильмов с параметризацией")
     @allure.description("Тест проверяет получение списка фильмов по параметрам "
                         "используя параметризацию пайтеста")
-    @pytest.mark.parametrize("maxPrice,minPrice,locations,genreld", [(750, 400, 'MSK', 1), (500, 200, 'SPB', 5), ])
+    @pytest.mark.parametrize("maxPrice,minPrice,locations,genreld", [(750, 400, 'MSK', 1), (500, 200, 'SPB', 5), ],
+                             ids=["750-400, MSK, 1 movie", "500-200, SPB, 5 movie"])
     def test_get_movies_with_parametrize_params(self, api_manager, maxPrice, minPrice, locations, genreld):
         """ Тест получения списка фильмов """
         response = api_manager.movies_api.get_movies(
@@ -154,14 +156,10 @@ class TestMoviesNegative:
 class TestMoviesDB:
 
 
-    def test_db_requests(self, super_admin, db_helper, created_test_user):
-        assert created_test_user == db_helper.get_user_by_id(created_test_user.id)
-        assert db_helper.user_exists_by_email("api1@gmail.com")
-
     @pytest.mark.regression
     @allure.title("Проверка поста фильма в БД")
     @allure.description("Тест проверяет что при посте фильма он появляется в БД, после удаления - удаляется из БД")
-    def test_post_movies(self, super_admin, api_manager, movie_data, db_helper):
+    def test_post_movies_db(self, super_admin, api_manager, movie_data, db_helper):
         """ Тест поста нового фильма с проверкой работы БД"""
         assert not db_helper.get_movie_by_name(movie_data['name']), "такой фильм есть в БД"
         json_response = super_admin.api.movies_api.post_movies(movie_data).json()
@@ -178,20 +176,67 @@ class TestMoviesDB:
     @pytest.mark.slow
     @allure.title("Тест изменения фильма по ID")
     @allure.description("Тест проверяет возможность изменить фильм по ID и применяемость изменений")
-    def test_patch_movies_by_id(self, super_admin, api_manager, created_movie, db_helper):
+    def test_patch_movies_by_id_db(self, super_admin, api_manager, created_movie, db_helper):
         """ Тест редактирования фильма по ID. """
-        assert db_helper.get_movie_by_id(created_movie["id"]), "фильма нет в БД"
-        movie_data = {"name": 'Californication',
-                      "price": 350}
-        super_admin.api.movies_api.patch_movies_by_id(movi_id=created_movie['id'],
-                                                      movi_data=movie_data)
+        with allure.step("Проверяю что фильм есть в БД"):
+            assert db_helper.get_movie_by_id(created_movie["id"]), "фильма нет в БД"
+            movie_data = {"name": 'Californication',
+                          "price": 350}
+        with allure.step("Меняю название и стоимость фильма"):
+            super_admin.api.movies_api.patch_movies_by_id(movi_id=created_movie['id'],
+                                                          movi_data=movie_data)
         get_response = api_manager.movies_api.get_movies_by_id(created_movie['id'])
         response_db = db_helper.get_movie_by_id(created_movie["id"])
-        with check:
-            msg = "Имя фильма не совпадает с ожидаемым"
-            check.equal(response_db.name, movie_data["name"], msg)
-            check.equal(get_response.json()["name"], movie_data["name"]), "не поменялось название фильма"
-            check.equal(get_response.json()["price"], movie_data["price"]), "не поменялась стоимость фильма"
+        with allure.step("проверяю соответствие изменения введенным параметрам"):
+            with check:
+                msg = "Имя фильма не совпадает с ожидаемым"
+                check.equal(response_db.name, movie_data["name"], msg)
+                check.equal(get_response.json()["name"], movie_data["name"]), "не поменялось название фильма"
+                check.equal(get_response.json()["price"], movie_data["price"]), "не поменялась стоимость фильма"
 
+    @pytest.mark.regression
+    @allure.title("Тест соответствия get запроса базе данных")
+    @allure.description("Тест проверяет что в ответе на get запрос информация совпадает с базой данных")
+    def test_get_movies_by_id_db(self, super_admin, db_helper, created_movie):
+        response = super_admin.api.movies_api.get_movies_by_id(created_movie['id']).json()
+        response_bd = db_helper.get_movie_by_name(created_movie['name'])
+        with check:
+            check.equal(response_bd.id, response['id'], "Не соответствуют ID фильмов")
+            check.equal(response_bd.name, response['name'], "Не соответствуют названия фильмов")
+            check.equal(response_bd.price, response['price'], "Не соответствуют стоимости фильмов")
+            check.equal(response_bd.published, response['published'], "Не соответствуют опубликованности фильмов")
+            check.equal(response_bd.genre_id, response['genreId'], "Не соответствуют жанры фильмов")
+
+    @pytest.mark.regression
+    @allure.title("Тест поиска фильмов по параметрам в соответствии с БД")
+    @allure.description("Тест проверяет соответствие результата API поиска фильмов по параметрам с результатом поиска в базе данных")
+    def test_get_movies_with_params_db(self, api_manager, movie_get_params, db_helper):
+        response = api_manager.movies_api.get_movies(movie_get_params).json()
+        response_db = db_helper.get_movie_by_params(movie_get_params)
+        print(response)
+        print(response_db)
+        assert len(response['movies']) == len(response_db) == movie_get_params['pageSize'], \
+            'фильтр не отрабатывает, неверное количество фильмов на странице'
+        for i in range(len(response['movies'])):
+            assert response_db[i].name == response['movies'][i]['name'], "API ответ не соответствует ответу из базы данных"
+            assert response_db[i].id == response['movies'][i]['id'], "API ответ не соответствует ответу из базы данных"
+            assert response_db[i].price == response['movies'][i]['price'], "API ответ не соответствует ответу из базы данных"
+            assert movie_get_params['minPrice'] < response_db[i].price < movie_get_params['maxPrice'], \
+                'фильтр не отрабатывает, цена вне указанного диапазона'
+            assert response_db[i].location == response['movies'][i]['location'] == movie_get_params['locations'], \
+                'фильтр не отрабатывает, неправильная локация'
+
+
+
+
+
+    # def test_olo(self, db_helper):
+    #     db_response = db_helper.get_movie_by_name("Список Шиндлера")
+    #     id_movie = db_response.to_dict()["id"]
+    #     print(f"AAAAAAAAAAAAAAAAAAA{db_response}")
+    #
+    # def test_get_movie_name_by_id(self, db_helper):
+    #     db_response = db_helper.get_movie_by_id('11')
+    #     print(f"AAAAAAAAAAAAAAAAAAAAA{db_response}")
 
 

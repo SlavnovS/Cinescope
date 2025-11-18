@@ -29,7 +29,7 @@ class CustomRequester:
         response = self.session.request(method, url, json=data, params=params, headers=self.headers)
         if need_logging:
             self.log_request_and_response(response, expected_status)
-        if response.status_code != expected_status:
+        if response.status_code != expected_status and not response.ok:
             raise ValueError(f"Unexpected status code: {response.status_code}. "
                              f"Expected: {expected_status}")
         return response

@@ -39,7 +39,10 @@ class TestAuthAPI:
 
 class TestNegativeAuthAPI:
 
+
     @pytest.mark.regression
+    @allure.title("Негативный тест регистрации пользователя")
+    @allure.description("Тест проверяет регистрацию пользователя с неверным passwordRepeat")
     def test_negative_register_user(self, api_manager: ApiManager, test_user):
         """ Негативный тест на регистрацию пользователя. """
         test_user.passwordRepeat = test_user.passwordRepeat[:8] + "45"
@@ -48,6 +51,9 @@ class TestNegativeAuthAPI:
         assert "accessToken" not in response.json(), "Токен доступа присутствует в ответе"
 
     @pytest.mark.regression
+    @allure.title("Негативный тест регистрации и авторизации пользователя")
+    @allure.description("Тест проверяет авторизацию пользователя с неверным паролем, отсутствие "
+                        "получения токена при авторизации")
     def test_negative_login_user(self, api_manager, test_user):
         """ Негативный тест на регистрацию и авторизацию пользователя. """
         api_manager.auth_api.register_user(user_data=test_user)
@@ -55,16 +61,21 @@ class TestNegativeAuthAPI:
         test_negative_user.password = test_negative_user.password[:8] + "45"
         response = api_manager.auth_api.login_user(test_negative_user, expected_status=401)
         assert "accessToken" not in response.json(), "Токен доступа присутствует в ответе"
-        # а можно ит ак еще
+        # а можно и так еще
         # response = api_manager.auth_api.login_user(test_user, expected_status=401)
         # assert "accessToken" not in response.json(), "Токен доступа присутствует в ответе"
 
-
+@allure.epic("cinescope")
+@allure.feature("Тестирование API")
+@allure.story("Позитивное тестирование TestUser")
 class TestUser:
 
     @pytest.mark.smoke
+    @allure.title("Тест на создание пользователя")
+    @allure.description("Тест проверяет создание пользователя администратором сайта, соответствие "
+                        "данных пользователя, введенным параметрам")
     def test_create_user(self, super_admin, creation_user_data):
-        """ Тест на создание пользователя по ID с правами суперадмина. """
+        """ Тест на создание пользователя. """
         response = super_admin.api.user_api.create_user(creation_user_data).json()
         assert response.get('id'), "ID должен быть не пустым"  # вроде так достаточно
         assert response.get('email') == creation_user_data.email
@@ -73,6 +84,9 @@ class TestUser:
         assert response.get('verified') is True
 
     @pytest.mark.smoke
+    @allure.title("Тест на поиск пользователя по ID при наличии прав администратора")
+    @allure.description("Тест проверяет поиск пользователя по ID администратором сайта, соответствие "
+                        "данных пользователя, введенным параметрам")
     def test_get_user_by_locator(self, super_admin, creation_user_data):
         """ Тест на получение информации пользователя по ID с правами суперадмина. """
         created_user_response = super_admin.api.user_api.create_user(creation_user_data).json()
@@ -87,11 +101,15 @@ class TestUser:
 
     @pytest.mark.smoke
     @pytest.mark.slow
+    @allure.title("Тест на поиск пользователя по ID при отсутствии прав администратора")
+    @allure.description("Тест проверяет невозможность поиска пользователя по ID при отсутствии прав администратора")
     def test_get_user_by_locator_common_user(self, common_user):
         """ Тест на получение информации пользователя по ID с правами юзера. """
         common_user.api.user_api.get_user(common_user.email, expected_status=403)
 
     @pytest.mark.smoke
+    @allure.title("Тест на удаление пользователя по ID при наличии прав администратора")
+    @allure.description("Тест проверяет возможность удаления пользователя по ID администратором сайта")
     def test_delete_user(self, super_admin, creation_user_data):
         """ Тест на удаление пользователя по ID с правами суперадмина. """
         response = super_admin.api.user_api.create_user(creation_user_data).json()
@@ -101,6 +119,8 @@ class TestUser:
 
     @pytest.mark.regression
     @pytest.mark.skipif(skip_status, reason="Временно отключён")
+    @allure.title("Тест на удаление пользователя по ID при отсутствии прав администратора")
+    @allure.description("Тест проверяет невозможность удаления пользователя по ID при отсутствии прав администратора сайта")
     def test_delete_user_by_id_common_user(self, api_manager, super_admin, common_user):
         """ Тест на удаление пользователя по ID с правами юзера. """
         response_common_user = super_admin.api.user_api.get_user(common_user.email).json()
@@ -114,4 +134,17 @@ class TestUser:
         get_response = super_admin.api.user_api.get_user(response.get('id'))
         assert len(get_response.json()) != 0, "данные удалились"
         super_admin.api.user_api.delete_user(response.get('id'))
+
+
+class TestUserDB:
+
+
+    def test_create_user_db(self, super_admin, creation_user_data, db_helper):
+        db_response = db_helper.get_user_by_email(creation_user_data.email)
+        assert db_response is None
+        response = super_admin.api.user_api.create_user(creation_user_data).json()
+        db_response = db_helper.get_user_by_id(response['id'])
+        assert db_response
+
+
 
