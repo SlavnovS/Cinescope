@@ -5,30 +5,30 @@ from random import randint
 from pathlib import Path
 from datetime import datetime
 
-@pytest.fixture(scope="session")
-def browser(playwright):
-    browser = playwright.chromium.launch(headless=False)
-    yield browser
-    browser.close()
-
-DEFAULT_UI_TIMEOUT = 30000  # Пример значения таймаута
-
-@pytest.fixture(scope="function")
-def context(browser):
-    context = browser.new_context()
-    context.tracing.start(screenshots=True, snapshots=True, sources=True)
-    context.set_default_timeout(DEFAULT_UI_TIMEOUT)  # Установка таймаута по умолчанию
-    yield context  # yield возвращает значение фикстуры, выполнение теста продолжится после yield
-    log_name = f"trace_{Tools.get_timestamp()}.zip"
-    trace_path = Tools.files_dir('playwright_trace', log_name)
-    context.tracing.stop(path=trace_path)
-    context.close()  # Контекст закрывается после завершения теста
-
-@pytest.fixture(scope="function")  # Страница создается для каждого теста
-def page(context) -> Page:
-    page = context.new_page()
-    yield page  # yield возвращает значение фикстуры, выполнение теста продолжится после yield
-    page.close()  # Страница закрывается после завершения теста
+# @pytest.fixture(scope="session")
+# def browser(playwright):
+#     browser = playwright.chromium.launch(headless=False)
+#     yield browser
+#     browser.close()
+#
+# DEFAULT_UI_TIMEOUT = 30000  # Пример значения таймаута
+#
+# @pytest.fixture(scope="function")
+# def context(browser):
+#     context = browser.new_context()
+#     context.tracing.start(screenshots=True, snapshots=True, sources=True)
+#     context.set_default_timeout(DEFAULT_UI_TIMEOUT)  # Установка таймаута по умолчанию
+#     yield context  # yield возвращает значение фикстуры, выполнение теста продолжится после yield
+#     log_name = f"trace_{Tools.get_timestamp()}.zip"
+#     trace_path = Tools.files_dir('playwright_trace', log_name)
+#     context.tracing.stop(path=trace_path)
+#     context.close()  # Контекст закрывается после завершения теста
+#
+# @pytest.fixture(scope="function")  # Страница создается для каждого теста
+# def page(context) -> Page:
+#     page = context.new_page()
+#     yield page  # yield возвращает значение фикстуры, выполнение теста продолжится после yield
+#     page.close()  # Страница закрывается после завершения теста
 
 
 class Tools:
@@ -59,7 +59,7 @@ class Tools:
 
 
 def test_text_box(page: Page):
-    page.pause()
+
     page.goto('https://demoqa.com/text-box')
 
     # вариант №2
@@ -76,8 +76,8 @@ def test_text_box(page: Page):
     expect(page.locator('#output #currentAddress')).to_have_text('Current Address :Phuket, Thalang 99')
     expect(page.locator('#output #permanentAddress')).to_have_text('Permananet Address :Moscow, Mashkova 1')
 
-
-    time.sleep(10)
+    page.wait_for_url("https://demoqa.com/text-box")
+    time.sleep(3)
 
 def test_cinescope_registration(page):
     page.goto('https://dev-cinescope.coconutqa.ru/register')
@@ -139,7 +139,7 @@ def test_tools(page):
 
     page.goto('https://demoqa.com/radio-button', referer='https://google.com')
 
-    page.locator('label', has_text="Impressive").click()
+    page.locator('label', has_text="Impressive").check()
 
     expect(page.locator('.mt-3')).to_contain_text("Impressive")
 

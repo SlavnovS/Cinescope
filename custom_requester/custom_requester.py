@@ -72,7 +72,7 @@ class CustomRequester:
 
             # Обрабатываем ответ
             response_status = response.status_code
-            # is_success = response.ok -теперь не нужен (сравниваем с ожидаемым СК)
+            is_success = response.ok
             response_data = response.text
             # Попытка форматировать JSON
             # try:
@@ -82,7 +82,7 @@ class CustomRequester:
 
             # Логируем ответ
             self.logger.info(f"\n{'=' * 40} RESPONSE {'=' * 40}")
-            if expected_status != response.status_code:
+            if expected_status != response.status_code and not is_success:
                 self.logger.info(
                     f"\tSTATUS_CODE: {RED}{response_status}{RESET}\n"
                     f"\tDATA: {RED}{response_data}{RESET}"

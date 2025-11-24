@@ -12,4 +12,8 @@ __pycache__/
 .env
 do_not_push_me.py
 example.py
+learning.py
 test_mock_services.py
+allure-results/
+allure-report/
+files/

@@ -9,6 +9,8 @@ from models.base_models import TestUser
 from sqlalchemy.orm import Session
 from db_requester.db_client import get_db_session
 from db_requester.db_helpers import DBHelper
+from playwright.sync_api import Page
+from example import Tools
 
 @pytest.fixture(scope="function")
 def user_session():
@@ -59,7 +61,7 @@ def common_user(user_session, super_admin, creation_user_data):
     super_admin.api.user_api.create_user(creation_user_data)
     response = common_user.api.auth_api.authenticate(common_user.creds).json()
     yield common_user
-    super_admin.api.user_api.delete_user(response['user']['id'])
+    # super_admin.api.user_api.delete_user(response['user']['id'])
 
 
 @pytest.fixture(scope="session")
@@ -156,4 +158,27 @@ def created_test_user(db_helper):
     if db_helper.get_user_by_id(user.id):
         db_helper.delete_user(user)
 
+@pytest.fixture(scope="session")
+def browser(playwright):
+    browser = playwright.chromium.launch(headless=False)
+    yield browser
+    browser.close()
 
+DEFAULT_UI_TIMEOUT = 30000  # Пример значения таймаута
+
+@pytest.fixture(scope="function")
+def context(browser):
+    context = browser.new_context()
+    context.tracing.start(screenshots=True, snapshots=True, sources=True)
+    context.set_default_timeout(DEFAULT_UI_TIMEOUT)  # Установка таймаута по умолчанию
+    yield context  # yield возвращает значение фикстуры, выполнение теста продолжится после yield
+    log_name = f"trace_{Tools.get_timestamp()}.zip"
+    trace_path = Tools.files_dir('playwright_trace', log_name)
+    context.tracing.stop(path=trace_path)
+    context.close()  # Контекст закрывается после завершения теста
+
+@pytest.fixture(scope="function")  # Страница создается для каждого теста
+def page(context) -> Page:
+    page = context.new_page()
+    yield page  # yield возвращает значение фикстуры, выполнение теста продолжится после yield
+    page.close()  # Страница закрывается после завершения теста

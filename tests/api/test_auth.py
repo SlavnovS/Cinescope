@@ -1,6 +1,5 @@
 import copy
 import allure
-# from http.client import responses
 import pytest
 from api.api_manager import ApiManager
 from models.base_models import RegisterUserResponse
