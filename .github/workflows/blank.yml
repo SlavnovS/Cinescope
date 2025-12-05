@@ -16,6 +16,15 @@ jobs:
     # Запуск на последней версии Ubuntu
     runs-on: ubuntu-latest
 
+    env:
+      DB_MOVIES_HOST: ${{ vars.DB_MOVIES_HOST }}
+      DB_MOVIES_PORT: ${{ vars.DB_MOVIES_PORT }}
+      DB_MOVIES_NAME: ${{ vars.DB_MOVIES_NAME }}
+      DB_MOVIES_USERNAME: ${{ vars.DB_MOVIES_USERNAME }}
+      DB_MOVIES_PASSWORD: ${{ secrets.DB_MOVIES_PASSWORD }}
+      SUPER_ADMIN_USERNAME: ${{ vars.SUPER_ADMIN_USERNAME }}
+      SUPER_ADMIN_PASSWORD: ${{ secrets.SUPER_ADMIN_PASSWORD }}
+
     # Последовательность шагов
     steps:
     # Шаг 1: Получение кода из репозитория
@@ -66,6 +75,15 @@ jobs:
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # Закомментированная строка: расширенная проверка стиля кода
         # flake8 . --count --exit-zero --max-complexity=10 --max-line-length=200 --statistics
+
+    - name: Debug DB env
+      run: |
+        echo "DB_MOVIES_HOST=$DB_MOVIES_HOST"
+        echo "DB_MOVIES_PORT=$DB_MOVIES_PORT"
+        echo "DB_MOVIES_NAME=$DB_MOVIES_NAME"
+        echo "DB_MOVIES_USERNAME=$DB_MOVIES_USERNAME"
+        echo "DB_MOVIES_PASSWORD=${#DB_MOVIES_PASSWORD}"
+        env | sort | grep DB_MOVIES || true
 
     # Шаг 6: Запуск тестов
     - name: Run tests
