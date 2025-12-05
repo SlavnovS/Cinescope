@@ -1,7 +1,7 @@
 import os
-# from dotenv import load_dotenv
-#
-# load_dotenv()
+from dotenv import load_dotenv
+
+load_dotenv()
 
 print("HOST:", os.getenv("DB_MOVIES_HOST"))
 print("PORT:", os.getenv("DB_MOVIES_PORT"))

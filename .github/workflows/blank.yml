@@ -16,14 +16,14 @@ jobs:
     # Запуск на последней версии Ubuntu
     runs-on: ubuntu-latest
 
-#    env:
-#      DB_MOVIES_HOST: ${{ vars.DB_MOVIES_HOST }}
-#      DB_MOVIES_PORT: ${{ vars.DB_MOVIES_PORT }}
-#      DB_MOVIES_NAME: ${{ vars.DB_MOVIES_NAME }}
-#      DB_MOVIES_USERNAME: ${{ vars.DB_MOVIES_USERNAME }}
-#      DB_MOVIES_PASSWORD: ${{ secrets.DB_MOVIES_PASSWORD }}
-#      SUPER_ADMIN_USERNAME: ${{ vars.SUPER_ADMIN_USERNAME }}
-#      SUPER_ADMIN_PASSWORD: ${{ secrets.SUPER_ADMIN_PASSWORD }}
+    env:
+      DB_MOVIES_HOST: ${{ vars.DB_MOVIES_HOST }}
+      DB_MOVIES_PORT: ${{ vars.DB_MOVIES_PORT }}
+      DB_MOVIES_NAME: ${{ vars.DB_MOVIES_NAME }}
+      DB_MOVIES_USERNAME: ${{ vars.DB_MOVIES_USERNAME }}
+      DB_MOVIES_PASSWORD: ${{ secrets.DB_MOVIES_PASSWORD }}
+      SUPER_ADMIN_USERNAME: ${{ vars.SUPER_ADMIN_USERNAME }}
+      SUPER_ADMIN_PASSWORD: ${{ secrets.SUPER_ADMIN_PASSWORD }}
 
     # Последовательность шагов
     steps:
