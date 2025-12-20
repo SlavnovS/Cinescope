@@ -16,11 +16,12 @@ class TestAuthAPI:
     @pytest.mark.smoke
     @allure.title("Тест регистрации пользователя")
     @allure.description("Тест проверяет регистрацию пользователя")
-    def test_register_user(self, api_manager: ApiManager, test_user):
+    def test_register_user(self, api_manager: ApiManager, test_user, super_admin):
         """ Тест на регистрацию пользователя. """
-        response = api_manager.auth_api.register_user(user_data=test_user)
-        response_data = RegisterUserResponse(**response.json())
+        response = api_manager.auth_api.register_user(user_data=test_user).json()
+        response_data = RegisterUserResponse(**response)
         assert response_data.email == test_user.email, "Email не совпадает"
+        super_admin.api.user_api.delete_user(response.get('id'))
 
     @pytest.mark.smoke
     @allure.title("Тест регистрации и авторизации пользователя")
@@ -34,6 +35,7 @@ class TestAuthAPI:
         response = api_manager.auth_api.login_user(login_data).json()
         assert "accessToken" in response, "Токен доступа отсутствует в ответе"
         assert response["user"]["email"] == test_user.email, "Email не совпадает"
+
 
 
 class TestNegativeAuthAPI:

@@ -83,12 +83,17 @@ class CustomRequester:
             # Логируем ответ
             self.logger.info(f"\n{'=' * 40} RESPONSE {'=' * 40}")
             if expected_status != response.status_code and not is_success:
+                if 500 <= response_status < 600:
+                    self.logger.critical(
+                        "SERVER ERROR %s for %s %s\nResponse: %s",
+                        response_status, request.method, request.url, response_data,
+                    )
                 self.logger.info(
                     f"\tSTATUS_CODE: {RED}{response_status}{RESET}\n"
                     f"\tDATA: {RED}{response_data}{RESET}"
                 )
             else:
-                self.logger.info(
+                self.logger.error(
                     f"\tSTATUS_CODE: {GREEN}{response_status}{RESET}\n"
                     f"\tDATA:\n{response_data}"
                 )

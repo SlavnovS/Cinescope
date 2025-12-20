@@ -207,6 +207,7 @@ class TestMoviesDB:
             check.equal(response_bd.published, response['published'], "Не соответствуют опубликованности фильмов")
             check.equal(response_bd.genre_id, response['genreId'], "Не соответствуют жанры фильмов")
 
+    # @pytest.mark.flaky(reruns=2, reruns_delay=1)
     @pytest.mark.regression
     @allure.title("Тест поиска фильмов по параметрам в соответствии с БД")
     @allure.description("Тест проверяет соответствие результата API поиска фильмов по параметрам с результатом поиска в базе данных")
