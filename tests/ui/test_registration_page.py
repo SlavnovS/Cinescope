@@ -1,10 +1,9 @@
 import time
-from playwright.sync_api import sync_playwright, Page
+from playwright.sync_api import Page, expect
 import allure
 import pytest
 from models.page_object_models import CinescopRegisterPage, CinescopLoginPage
 from utils.data_generator import DataGenerator
-from playwright.sync_api import Page, sync_playwright, expect
 
 
 @allure.epic("Тестирование UI")
@@ -35,6 +34,9 @@ class TestloginPage:
         time.sleep(2)
         # browser.close()
 
+    @staticmethod
+    def get_user():  # 2 отдельных теста
+        pass
 
 @allure.epic("Тестирование UI")
 @allure.feature("Тестирование Страницы Register")
@@ -59,6 +61,10 @@ class TestRegisterPage:
         register_page.assert_allert_was_pop_up()  # Проверка появления и исчезновения алерта
         # Пауза для визуальной проверки (нужно удалить в реальном тестировании)
         time.sleep(2)
+
+    @staticmethod
+    def get_user():  # 2 отдельных теста
+        pass
 
 class TestUI:
     movi_url = "https://dev-cinescope.coconutqa.ru/"

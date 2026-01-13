@@ -3,7 +3,6 @@ import string
 from faker import Faker
 import datetime
 
-
 faker = Faker()
 
 
@@ -92,3 +91,14 @@ class DataGenerator:
     @staticmethod
     def generate_random_int(my_int: int):
         return random.randint(1, my_int)
+
+    @staticmethod
+    def generate_payment():
+        return {"movieId": random.choice([190, 206, 220, 256, 341]),
+                "amount": random.choice([1, 2, 3, 4]),
+                "card": {
+                    "cardNumber": "4242424242424242",
+                    "cardHolder": "John Doe",
+                    "expirationDate": "12/25",
+                    "securityCode": 123,
+                    "test": "Iam"}}

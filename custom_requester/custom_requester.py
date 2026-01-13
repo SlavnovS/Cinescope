@@ -20,6 +20,11 @@ class CustomRequester:
         self.headers = self.base_headers.copy()
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging.INFO)
+        # self.session.verify = False  # 🔥 FIDDLER FIX
+        # self.session.proxies = {
+        #     'http': 'http://127.0.0.1:8888',
+        #     'https': 'http://127.0.0.1:8888'
+        # }
 
     def send_request(self, method, endpoint, data=None, params=None,
                      expected_status=200, need_logging=True):
@@ -62,36 +67,53 @@ class CustomRequester:
                 body = f"-d '{body}' \n" if body != '{}' else ''
 
             # Логируем запрос
-            self.logger.info(f"\n{'=' * 40} REQUEST {'=' * 40}")
+            # self.logger.info(f"\n{'=' * 40} REQUEST {'=' * 40}")
+            self.logger.info("\n%s", "=" * 40 + " REQUEST " + "=" * 40)
+            # self.logger.info(
+            #     f"{GREEN}{full_test_name}{RESET}\n"
+            #     f"curl -X {request.method} '{request.url}' \\\n"
+            #     f"{headers} \\\n"
+            #     f"{body}"
+            # )
             self.logger.info(
-                f"{GREEN}{full_test_name}{RESET}\n"
-                f"curl -X {request.method} '{request.url}' \\\n"
-                f"{headers} \\\n"
-                f"{body}"
+                "%s%s%s\ncurl -X %s '%s' \\\n%s \\\n%s",
+                GREEN, full_test_name, RESET, request.method, request.url, headers, body
             )
-
             # Обрабатываем ответ
             response_status = response.status_code
             is_success = response.ok
             response_data = response.text
 
             # Логируем ответ
-            self.logger.info(f"\n{'=' * 40} RESPONSE {'=' * 40}")
+            # self.logger.info(f"\n{'=' * 40} RESPONSE {'=' * 40}")
+            self.logger.info("\n%s", "=" * 40 + " REQUEST " + "=" * 40)
             if expected_status != response.status_code and not is_success:
                 if 500 <= response_status < 600:
                     self.logger.critical(
                         "SERVER ERROR %s for %s %s\nResponse: %s",
                         response_status, request.method, request.url, response_data,
                     )
+                # self.logger.error(
+                #     f"\tSTATUS_CODE: {RED}{response_status}{RESET}\n"
+                #     f"\tDATA: {RED}{response_data}{RESET}"
+                # )
                 self.logger.error(
-                    f"\tSTATUS_CODE: {RED}{response_status}{RESET}\n"
-                    f"\tDATA: {RED}{response_data}{RESET}"
+                    "\tSTATUS_CODE: %s%s%s\n"
+                    "\tDATA: %s%s%s",
+                    RED, response_status, RESET, RED, response_data, RESET
                 )
             else:
+                # self.logger.info(
+                #     f"\tSTATUS_CODE: {GREEN}{response_status}{RESET}\n"
+                #     f"\tDATA:\n{response_data}"
+                # )
                 self.logger.info(
-                    f"\tSTATUS_CODE: {GREEN}{response_status}{RESET}\n"
-                    f"\tDATA:\n{response_data}"
+                    "\tSTATUS_CODE: %s%s%s\n"
+                    "\tDATA:\n%s",
+                    GREEN, response_status, RESET, response_data
                 )
-            self.logger.info(f"{'=' * 80}\n")
+            # self.logger.info(f"{'=' * 80}\n")
+            self.logger.info("%s", "=" * 80)
         except Exception as e:
-            self.logger.error(f"\nLogging failed: {type(e)} - {e}")
+            # self.logger.error(f"\nLogging failed: {type(e)} - {e}")
+            self.logger.error("\nLogging failed: %s - %s", type(e).__name__, e)

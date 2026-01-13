@@ -13,11 +13,30 @@ from playwright.sync_api import Page
 from example import Tools
 import time
 import allure
+from kafka import KafkaConsumer
+import json
 
 # Глобальное хранилище статистики по API-тестам
 API_STATS = {
     "tests": [],  # список словарей: {name, duration, is_negative}
 }
+
+@pytest.fixture(scope="session")
+def kafka_bootstrap_servers():
+    """Твой Kafka broker"""
+    return '80.90.191.123:9093' # ← ИЗМЕНИ на свой адрес!
+
+@pytest.fixture(scope="session")
+def kafka_consumer(kafka_bootstrap_servers):
+    consumer = KafkaConsumer(
+        'create.payment',  # топик для тестов
+        bootstrap_servers=kafka_bootstrap_servers,
+        group_id='test-group',
+        auto_offset_reset='earliest',
+        value_deserializer=lambda x: json.loads(x.decode('utf-8'))
+    )
+    yield consumer
+    consumer.close()
 
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_protocol(item, nextitem):
@@ -252,3 +271,8 @@ def page(context) -> Page:
     page = context.new_page()
     yield page  # yield возвращает значение фикстуры, выполнение теста продолжится после yield
     page.close()  # Страница закрывается после завершения теста
+
+@pytest.fixture(scope="function")
+def creeds_payment():
+    creeds_payment = DataGenerator.generate_payment()
+    return creeds_payment

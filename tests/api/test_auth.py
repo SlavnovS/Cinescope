@@ -121,7 +121,8 @@ class TestUser:
     @pytest.mark.regression
     @pytest.mark.skipif(skip_status, reason="Временно отключён")
     @allure.title("Тест на удаление пользователя по ID при отсутствии прав администратора")
-    @allure.description("Тест проверяет невозможность удаления пользователя по ID при отсутствии прав администратора сайта")
+    @allure.description("Тест проверяет невозможность удаления пользователя по ID "
+                        "при отсутствии прав администратора сайта")
     def test_delete_user_by_id_common_user(self, api_manager, super_admin, common_user):
         """ Тест на удаление пользователя по ID с правами юзера. """
         response_common_user = super_admin.api.user_api.get_user(common_user.email).json()
@@ -147,5 +148,8 @@ class TestUserDB:
         db_response = db_helper.get_user_by_id(response['id'])
         assert db_response
 
+    @staticmethod
+    def get_user():  # 2 отдельных теста
+        pass
 
 

@@ -1,8 +1,8 @@
-import time
-from http.client import responses
-from pytest_check import check, equal
+from pytest_check import check
 import allure
 import pytest
+from datetime import datetime
+import json
 
 # pytestmark = pytest.mark.skip(reason="TASK-1234: Тесты временно отключены из-за нестабильности")
 @allure.epic("cinescope")
@@ -10,14 +10,12 @@ import pytest
 @allure.story("Позитивное тестирование MoviesAPI")
 class TestMovies:
 
-
     @pytest.mark.smoke
     @allure.title("Тест получения списка фильмов")
     @allure.description("Тест проверяет получение списка фильмов")
     def test_get_movies(self, api_manager):
         """ Тест получения списка фильмов """
         api_manager.movies_api.get_movies()
-
 
     @pytest.mark.regression
     @allure.title("Тест получения списка фильмов по параметрам")
@@ -41,7 +39,8 @@ class TestMovies:
     def test_get_movies_with_parametrize_params(self, api_manager, maxPrice, minPrice, locations, genreld):
         """ Тест получения списка фильмов """
         response = api_manager.movies_api.get_movies(
-            {'maxPrice': maxPrice, 'minPrice': minPrice, 'locations': locations, 'genreld': genreld, 'pageSize': 5}).json()
+            {'maxPrice': maxPrice, 'minPrice': minPrice, 'locations': locations,
+             'genreld': genreld, 'pageSize': 5}).json()
         for movie in response['movies']:
             assert maxPrice > movie['price'] > minPrice, \
                 'фильтр не отрабатывает, цена вне указанного диапазона'
@@ -95,6 +94,7 @@ class TestMovies:
         super_admin.api.movies_api.del_movies_by_id(created_movie_for_del['id'])
         get_response = api_manager.movies_api.get_movies_by_id(created_movie_for_del['id'], expected_status=404)
         assert get_response.status_code == 404, "фильм не удалился"
+
 
 @allure.epic("cinescope")
 @allure.feature("Тестирование API")
@@ -150,11 +150,11 @@ class TestMoviesNegative:
         super_admin.api.movies_api.del_movies_by_id("aaa", expected_status=404)
         common_user.api.movies_api.del_movies_by_id(created_movie["id"], expected_status=403)
 
+
 @allure.epic("cinescope")
 @allure.feature("Тестирование API")
 @allure.story("Позитивное тестирование MoviesAPI с проверкой работы БД")
 class TestMoviesDB:
-
 
     @pytest.mark.regression
     @allure.title("Проверка поста фильма в БД")
@@ -191,8 +191,8 @@ class TestMoviesDB:
             with check:
                 msg = "Имя фильма не совпадает с ожидаемым"
                 check.equal(response_db.name, movie_data["name"], msg)
-                check.equal(get_response.json()["name"], movie_data["name"]), "не поменялось название фильма"
-                check.equal(get_response.json()["price"], movie_data["price"]), "не поменялась стоимость фильма"
+                check.equal(get_response.json()["name"], movie_data["name"], "не поменялось название фильма")
+                check.equal(get_response.json()["price"], movie_data["price"], "не поменялась стоимость фильма")
 
     @pytest.mark.regression
     @allure.title("Тест соответствия get запроса базе данных")
@@ -210,7 +210,8 @@ class TestMoviesDB:
     # @pytest.mark.flaky(reruns=2, reruns_delay=1)
     @pytest.mark.regression
     @allure.title("Тест поиска фильмов по параметрам в соответствии с БД")
-    @allure.description("Тест проверяет соответствие результата API поиска фильмов по параметрам с результатом поиска в базе данных")
+    @allure.description("Тест проверяет соответствие результата API поиска фильмов "
+                        "по параметрам с результатом поиска в базе данных")
     def test_get_movies_with_params_db(self, api_manager, movie_get_params, db_helper):
         response = api_manager.movies_api.get_movies(movie_get_params).json()
         response_db = db_helper.get_movie_by_params(movie_get_params)
@@ -219,16 +220,65 @@ class TestMoviesDB:
         assert len(response['movies']) == len(response_db) == movie_get_params['pageSize'], \
             'фильтр не отрабатывает, неверное количество фильмов на странице'
         for i in range(len(response['movies'])):
-            assert response_db[i].name == response['movies'][i]['name'], "API ответ не соответствует ответу из базы данных"
+            assert response_db[i].name == response['movies'][i]['name'], \
+                "API ответ не соответствует ответу из базы данных"
             assert response_db[i].id == response['movies'][i]['id'], "API ответ не соответствует ответу из базы данных"
-            assert response_db[i].price == response['movies'][i]['price'], "API ответ не соответствует ответу из базы данных"
+            assert response_db[i].price == response['movies'][i]['price'], \
+                "API ответ не соответствует ответу из базы данных"
             assert movie_get_params['minPrice'] < response_db[i].price < movie_get_params['maxPrice'], \
                 'фильтр не отрабатывает, цена вне указанного диапазона'
             assert response_db[i].location == response['movies'][i]['location'] == movie_get_params['locations'], \
                 'фильтр не отрабатывает, неправильная локация'
 
 
+@pytest.mark.kafka
+class TestKafkaPaymentAPI:
+    def test_api_sends_to_kafka(self, super_admin, creeds_payment, kafka_consumer):
+        super_admin.api.payment_api.post_payment(data=creeds_payment, expected_status=201)
 
+        # Читаем сообщение из Kafka
+        # messages = list(kafka_consumer)
+        # my_messages = messages[:1]
+        # print(messages)
+        # print(my_messages)
+
+    @pytest.mark.parametrize("page,page_size,status,created_at",[(1, 5, "SUCCESS", 'desc'),
+                                                                (1, 2, "INVALID_CARD", 'desc')])
+    def test_get_all_payments(self, super_admin, page, page_size, status, created_at):  # 2 отдельных теста
+        response = super_admin.api.payment_api.get_all_payments({'page':page,
+                                                                 'pageSize':page_size,
+                                                                 'status':status,
+                                                                 'created_at':created_at}).json()
+        with allure.step('проверка соответствия вывода параметрам'):
+            with check:
+                check.equal(response.get('page'), page, "несоответствие номера страницы")
+                check.equal(response.get('pageSize'), page_size, "несоответствие позиций на странице")
+            for i in response.get("payments"):
+                assert i['status'] == status, "статус не соответствует"
+            if created_at == "asc":
+                dates = [datetime.fromisoformat(i['createdAt'].replace('Z', '+00:00'))
+                         for i in response.get("payments")]
+                assert all(dates[i] <= dates[i + 1] for i in range(len(dates) - 1))
+            else:
+                dates = [datetime.fromisoformat(i['createdAt'].replace('Z', '+00:00'))
+                         for i in response.get("payments")]
+                assert all(dates[i] >= dates[i + 1] for i in range(len(dates) - 1))
+
+    def test_get_payments_by_id(self, super_admin):
+        user_id = '0bfbe544-2f80-472f-af9b-b7986490a3d7'
+        response = super_admin.api.payment_api.get_payments_by_id(params=user_id).json()
+
+        # print(json.dumps(response, indent=2))
+        for i in response:
+            assert i.get('userId') == user_id
+
+    def test_get_my_payments(self, common_user, creeds_payment):
+        common_user.api.payment_api.post_payment(data=creeds_payment).json()
+        common_id = common_user.api.auth_api.login_user({"email": common_user.email,
+                      "password": common_user.password}).json()['user']['id']
+        response = common_user.api.payment_api.get_my_payments().json()
+        for i in response:
+            assert i.get('userId') == common_id
 
 
     # def test_olo(self, db_helper):
@@ -239,5 +289,3 @@ class TestMoviesDB:
     # def test_get_movie_name_by_id(self, db_helper):
     #     db_response = db_helper.get_movie_by_id('11')
     #     print(f"AAAAAAAAAAAAAAAAAAAAA{db_response}")
-
-
