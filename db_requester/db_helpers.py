@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from db_models.user import UserDBModel
 from db_models.movie import MovieDBModel
+from db_models.payments import PaymentsDBModel
 from typing import Any
 
 class DBHelper:
@@ -64,3 +65,12 @@ class DBHelper:
     def get_movie_name_by_id(self, movie_id: str):
         """Получает фильм по ID"""
         return self.db_session.query(MovieDBModel).filter(MovieDBModel.id == movie_id).first()
+
+    def get_payment_by_user_id(self, id):
+        return (self.db_session.query(PaymentsDBModel).filter(PaymentsDBModel.user_id == id)
+                .order_by(PaymentsDBModel.created_at.asc()).all())
+
+    def get_payment_by_user_id_and_movie_id(self, id, u_id):
+        return (self.db_session.query(PaymentsDBModel).filter(PaymentsDBModel.movie_id == id,
+                                                             PaymentsDBModel.user_id == u_id)
+                .order_by(PaymentsDBModel.created_at.desc()).first())

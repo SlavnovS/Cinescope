@@ -1,8 +1,7 @@
+import time
 from pytest_check import check
 import allure
 import pytest
-from datetime import datetime
-import json
 
 # pytestmark = pytest.mark.skip(reason="TASK-1234: Тесты временно отключены из-за нестабильности")
 @allure.epic("cinescope")
@@ -230,57 +229,6 @@ class TestMoviesDB:
             assert response_db[i].location == response['movies'][i]['location'] == movie_get_params['locations'], \
                 'фильтр не отрабатывает, неправильная локация'
 
-
-@pytest.mark.kafka
-class TestKafkaPaymentAPI:
-    def test_api_sends_to_kafka(self, super_admin, creeds_payment, kafka_consumer):
-        super_admin.api.payment_api.post_payment(data=creeds_payment, expected_status=201)
-
-        # Читаем сообщение из Kafka
-        # messages = list(kafka_consumer)
-        # my_messages = messages[:1]
-        # print(messages)
-        # print(my_messages)
-
-    @pytest.mark.parametrize("page,page_size,status,created_at",[(1, 5, "SUCCESS", 'desc'),
-                                                                (1, 2, "INVALID_CARD", 'desc')])
-    def test_get_all_payments(self, super_admin, page, page_size, status, created_at):  # 2 отдельных теста
-        response = super_admin.api.payment_api.get_all_payments({'page':page,
-                                                                 'pageSize':page_size,
-                                                                 'status':status,
-                                                                 'created_at':created_at}).json()
-        with allure.step('проверка соответствия вывода параметрам'):
-            with check:
-                check.equal(response.get('page'), page, "несоответствие номера страницы")
-                check.equal(response.get('pageSize'), page_size, "несоответствие позиций на странице")
-            for i in response.get("payments"):
-                assert i['status'] == status, "статус не соответствует"
-            if created_at == "asc":
-                dates = [datetime.fromisoformat(i['createdAt'].replace('Z', '+00:00'))
-                         for i in response.get("payments")]
-                assert all(dates[i] <= dates[i + 1] for i in range(len(dates) - 1))
-            else:
-                dates = [datetime.fromisoformat(i['createdAt'].replace('Z', '+00:00'))
-                         for i in response.get("payments")]
-                assert all(dates[i] >= dates[i + 1] for i in range(len(dates) - 1))
-
-    def test_get_payments_by_id(self, super_admin):
-        user_id = '0bfbe544-2f80-472f-af9b-b7986490a3d7'
-        response = super_admin.api.payment_api.get_payments_by_id(params=user_id).json()
-
-        # print(json.dumps(response, indent=2))
-        for i in response:
-            assert i.get('userId') == user_id
-
-    def test_get_my_payments(self, common_user, creeds_payment):
-        common_user.api.payment_api.post_payment(data=creeds_payment).json()
-        common_id = common_user.api.auth_api.login_user({"email": common_user.email,
-                      "password": common_user.password}).json()['user']['id']
-        response = common_user.api.payment_api.get_my_payments().json()
-        for i in response:
-            assert i.get('userId') == common_id
-
-
     # def test_olo(self, db_helper):
     #     db_response = db_helper.get_movie_by_name("Список Шиндлера")
     #     id_movie = db_response.to_dict()["id"]
@@ -289,3 +237,4 @@ class TestKafkaPaymentAPI:
     # def test_get_movie_name_by_id(self, db_helper):
     #     db_response = db_helper.get_movie_by_id('11')
     #     print(f"AAAAAAAAAAAAAAAAAAAAA{db_response}")
+

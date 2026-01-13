@@ -1,7 +1,8 @@
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, RootModel
 from typing import Optional, List
-import datetime
+from datetime import datetime, timedelta
 from constants import Roles
+from enum import Enum
 
 class TestUser(BaseModel):
     email: str
@@ -36,3 +37,21 @@ class RegisterUserResponse(BaseModel):
         except ValueError:
             raise ValueError("Некорректный формат даты и времени")
         return value
+
+class PaymentStatus(str, Enum):
+    SUCCESS = "SUCCESS"
+    INVALID_CARD = "INVALID_CARD"
+    ERROR = "ERROR"
+
+class PaymentGetResponse(BaseModel):
+    id: int
+    user_id: str = Field(pattern=r'^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$',
+                        alias='userId')
+    movie_id: int = Field(..., gt=0, alias='movieId')
+    status: PaymentStatus
+    amount: int
+    total: int
+    created_at: datetime = Field(alias='createdAt')
+
+class PaymentsList(RootModel[List[PaymentGetResponse]]):
+    pass

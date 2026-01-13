@@ -9,6 +9,7 @@ __pycache__/
 *.log
 *.csv
 .token
+.env
 do_not_push_me.py
 example.py
 learning.py
