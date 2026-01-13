@@ -1,0 +1,25 @@
+[MASTER]
+max-line-length=120
+max-args=10
+max-positional-arguments=10
+ignore=venv,__pycache__,migrations,tests/fixtures,test_mock_services.py
+init-hook='import sys; sys.path.append("D:/my_projects/cinescope")'
+
+[FORMAT]
+max-line-length=120
+
+[MESSAGES CONTROL]
+disable=missing-docstring, # Разрешает отсутствие докстрингов
+        invalid-name, # Разрешает короткие/нестандартные имена
+        # too-many-arguments,
+        # too-many-positional-arguments,
+        # import-error, # НЕ проверяет существование модулей
+        broad-exception-caught, # Разрешает except Exception
+        unused-argument, # fixture не используется = OK
+        redefined-outer-name, # pytest fixtures не надо писать name=
+        protected-access, # Доступ к _private методам
+        trailing-newlines,
+        no-member
+
+[TYPECHECK]
+ignored-classes=mock.Mock,magicmock.Mock,unittest.mock.Mock
