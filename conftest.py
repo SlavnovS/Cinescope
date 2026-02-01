@@ -30,6 +30,7 @@ def kafka_bootstrap_servers():
 def kafka_consumer(kafka_bootstrap_servers):
     consumer = KafkaConsumer(
         'create.payment',  # топик для тестов
+        sefv=sev
         bootstrap_servers=kafka_bootstrap_servers,
         group_id='test-group',
         auto_offset_reset='earliest',
