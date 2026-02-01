@@ -13,7 +13,8 @@ from playwright.sync_api import Page
 from example import Tools
 import time
 import allure
-from kafka import KafkaConsumer
+from kafka import KafkaConsumer, KafkaProducer
+from resources.kafka_creds import KafkaCreds
 import json
 
 # Глобальное хранилище статистики по API-тестам
@@ -24,19 +25,55 @@ API_STATS = {
 @pytest.fixture(scope="session")
 def kafka_bootstrap_servers():
     """Твой Kafka broker"""
-    return '80.90.191.123:9093' # ← ИЗМЕНИ на свой адрес!
+    return f'{KafkaCreds.HOST}:{KafkaCreds.PORT}'
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 def kafka_consumer(kafka_bootstrap_servers):
     consumer = KafkaConsumer(
-        'create.payment',  # топик для тестов
-        bootstrap_servers=kafka_bootstrap_servers,
+        # 'create.payment',
+        bootstrap_servers=kafka_bootstrap_servers, # адрес брокера/кластера
         group_id='test-group',
-        auto_offset_reset='earliest',
-        value_deserializer=lambda x: json.loads(x.decode('utf-8'))
-    )
+        # group_id=f"tests-{uuid.uuid4()}",
+        auto_offset_reset='latest', # читаем только новые сообщения /earliest - с начала топика
+        enable_auto_commit=False, # выключает коммит прочитанных сообщений
+        consumer_timeout_ms=1000 # ограничивает временя ожидания появления сообщений при чтении
+                            )
     yield consumer
-    consumer.close()
+    consumer.close(autocommit=False)
+
+@pytest.fixture(scope="function")
+def kafka_subscribe_latest(kafka_consumer):
+    def subscribe_latest(topic: str):
+        kafka_consumer.subscribe([topic])
+        deadline = time.monotonic() + 5.0
+        while not kafka_consumer.assignment() and time.monotonic() < deadline:
+            # assignment() - возвращает текущий набор назначенных нам топиков
+            kafka_consumer.poll(timeout_ms=100)  # ждём назначения партиций
+        # kafka_consumer.seek_to_end()  # сдвигаем позицию на самый свежий offset
+        assigned = kafka_consumer.assignment()
+        assert assigned, "Не получили assignment"
+        start_offsets = kafka_consumer.end_offsets(assigned) # Явно ставим позицию на конец
+        for tp, off in start_offsets.items():
+            kafka_consumer.seek(tp, off)
+        return kafka_consumer
+    return subscribe_latest
+
+@pytest.fixture(scope="session")
+def kafka_producer(kafka_bootstrap_servers):
+    """ Создаёшь объект продюсера и подключаешь его к кластеру Kafka"""
+    producer = KafkaProducer(
+        bootstrap_servers=kafka_bootstrap_servers,
+        value_serializer=lambda v: json.dumps(v).encode("utf-8"),
+    )  # send()/flush() у producer
+    yield producer
+    producer.flush() # ждёшь, пока продьюсер дотолкает все буферизованные сообщения до брокера
+    producer.close()
+
+@pytest.fixture(scope='function')
+def create_movie(super_admin, movie_data):
+    response = super_admin.api.movies_api.post_movies(movie_data).json()
+    yield response["id"]
+    super_admin.api.movies_api.del_movies_by_id(response["id"])
 
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_protocol(item, nextitem):

@@ -94,7 +94,7 @@ class DataGenerator:
 
     @staticmethod
     def generate_payment():
-        return {"movieId": random.choice([190, 206, 220, 256, 341]),
+        return {"movieId": 0,
                 "amount": random.choice([1, 2, 3, 4]),
                 "card": {
                     "cardNumber": "4242424242424242",

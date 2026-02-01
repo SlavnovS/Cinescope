@@ -1,32 +1,74 @@
+from http.client import responses
 from pytest_check import check
 import allure
 import pytest
 from datetime import datetime, timedelta
 import json
 from models.base_models import PaymentsList, PaymentGetResponse
+import uuid
 
-
+@allure.epic('cinescope')
+@allure.feature('Payment')
 @pytest.mark.kafka
 class TestKafkaPaymentAPI:
-    def test_api_sends_to_kafka(self, super_admin, creeds_payment, db_helper, common_user, kafka_consumer):
-        # super_admin.api.payment_api.post_payment(data=creeds_payment, expected_status=201)
-        common_user.api.payment_api.post_payment(data=creeds_payment, expected_status=201).json()
-        common_id = common_user.api.auth_api.login_user({"email": common_user.email,
-                                                         "password": common_user.password}
-                                                         ).json()['user']['id']
-        db_new_payment = db_helper.get_payment_by_user_id_and_movie_id(id=creeds_payment['movieId'],
-                                                          u_id=common_id).to_dict().values()
-        with allure.step('сравнение с БД'):
-            assert common_id in db_new_payment
-            assert creeds_payment['movieId'] in db_new_payment
-            assert creeds_payment['amount'] in db_new_payment
 
-        # Читаем сообщение из Kafka
-        # messages = list(kafka_consumer)
-        # my_messages = messages[:1]
-        # print(messages)
-        # print(my_messages)
+    def test_api_sends_to_kafka(self, create_movie, super_admin, creeds_payment, db_helper,
+                                common_user, kafka_subscribe_latest):
+        consumer = kafka_subscribe_latest("register.payment")
 
+        creeds_payment["movieId"] = create_movie
+        super_admin.api.payment_api.post_payment(data=creeds_payment, expected_status=201)
+
+        batch = consumer.poll(timeout_ms=20000) # ждём сообщение до 20s
+        assert batch, "Kafka не получала сообщение"
+        kafka_value = (list(batch.values()))[0][0].value
+        kafka_value_dict = json.loads(kafka_value.decode("utf-8"))
+        assert kafka_value_dict['movieId'] == create_movie
+        assert kafka_value_dict['amount'] == creeds_payment['amount']
+        assert kafka_value_dict['status'] == 'SUCCESS'
+
+    def test_produce_and_read(self, kafka_producer, kafka_subscribe_latest):
+        topic = "register.payment"
+        consumer = kafka_subscribe_latest(topic)
+
+        corr_id = uuid.uuid4().hex
+        value = {
+            "total": 264,
+            "card": {
+                "cardNumber": "4242424242424242",
+                "cardHolder": "John Doe",
+                "expirationDate": "12/25",
+                "securityCode": 123,
+                "test": "Iam"}}
+        headers = [
+            ("kafka_replyPartition", b"0"),
+            ("kafka_replyTopic", b"create.payment.reply"),
+            ("kafka_correlationId", corr_id.encode("utf-8"))]
+
+        kafka_producer.send(topic, value=value, headers=headers)
+        kafka_producer.flush()
+
+        batch = consumer.poll(timeout_ms=20000)  # ждём сообщение до 20s
+        assert batch, "Kafka не получала сообщение"
+        kafka_value = (list(batch.values()))[0][0].value
+        kafka_value_dict = json.loads(kafka_value.decode("utf-8"))
+        assert kafka_value_dict["total"] == value["total"]
+
+        # common_user.api.payment_api.post_payment(data=creeds_payment, expected_status=201).json()
+        # common_id = common_user.api.auth_api.login_user({"email": common_user.email,
+        #                                                  "password": common_user.password}
+        #                                                  ).json()['user']['id']
+        # db_new_payment = db_helper.get_payment_by_user_id_and_movie_id(id=creeds_payment['movieId'],
+        #                                                   u_id=common_id).to_dict().values()
+        # with allure.step('сравнение с БД'):
+        #     assert common_id in db_new_payment
+        #     assert creeds_payment['movieId'] in db_new_payment
+        #     assert creeds_payment['amount'] in db_new_payment
+
+    @pytest.mark.smoke
+    @allure.story('get платежей')
+    @allure.title('получение всех платежей')
+    @allure.description('тест проверяет запрос платежей с разными пара метрами')
     @pytest.mark.parametrize("page,page_size,status,created_at",[(1, 5, "SUCCESS", 'desc'),
                                                                 (1, 2, "INVALID_CARD", 'desc')])
     def test_get_all_payments(self, super_admin, page, page_size, status, created_at):  # 2 отдельных теста
@@ -49,6 +91,9 @@ class TestKafkaPaymentAPI:
                          for i in response.get("payments")]
                 assert all(dates[i] >= dates[i + 1] for i in range(len(dates) - 1))
 
+    @allure.story('get платежей')
+    @allure.title('получение платежей по id')
+    @allure.description('тест проверяет возможность взять платежи по id и правильность вывода')
     def test_get_payments_by_id(self, super_admin, db_helper):
         user_id = '0bfbe544-2f80-472f-af9b-b7986490a3d7'
         response = super_admin.api.payment_api.get_payments_by_id(params=user_id)
@@ -66,6 +111,25 @@ class TestKafkaPaymentAPI:
             assert i.total == j.total, 'total не совпадают'
             assert i.created_at == j.created_at.replace(tzinfo=None), 'created_at не совпадают'
 
+    @allure.story('get платежей')
+    @allure.title('получение платежей по id')
+    @allure.description('тест проверяет запрос платежей по несуществующему id')
+    def test_negative_get_payments_by_id(self, super_admin, db_helper):
+        user_id = '0bfbe544'
+        response = super_admin.api.payment_api.get_payments_by_id(params=user_id, expected_status=404)
+        assert response.reason == "Not Found"
+
+    @allure.story('get платежей')
+    @allure.title('получение платежей по id')
+    @allure.description('тест проверяет запрос платежей по id без необходимых прав')
+    def test_negative_get_payments_by_id(self, common_user, db_helper):
+        user_id = '0bfbe544'
+        response = common_user.api.payment_api.get_payments_by_id(params=user_id, expected_status=403)
+        assert response.reason == "Forbidden"
+
+    @allure.story('get платежей')
+    @allure.title('получение своих платежей')
+    @allure.description('esgeg')
     def test_get_my_payments(self, common_user, creeds_payment, db_helper):
         with allure.step('пост фильма'):
             common_user.api.payment_api.post_payment(data=creeds_payment).json()
