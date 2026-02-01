@@ -24,7 +24,7 @@ API_STATS = {
 
 @pytest.fixture(scope="session")
 def kafka_bootstrap_servers():
-    """Твой Kafka broker купи"""
+    """Твой Kafka broker"""
     return f'{KafkaCreds.HOST}:{KafkaCreds.PORT}'
 
 @pytest.fixture(scope="function")
